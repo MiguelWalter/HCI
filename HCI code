@@ -26,73 +26,90 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
         }
 
         h1 {
             color: #f39c12;
             font-size: 36px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .buttons {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            position: relative;
         }
 
-        /* Hide radio buttons but keep them functional */
         input[type="radio"] {
             display: none;
         }
 
         /* Style for the buttons */
         label {
-            background-color: #2ecc71;
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
             color: white;
-            font-size: 16px;
-            padding: 12px 24px;
-            margin: 8px;
+            font-size: 16px; /* Reduced font size */
+            padding: 15px 20px; /* Reduced padding */
+            margin: 0;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            height: 90px; /* Reduced height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative; /* Ensure that it acts as a container for the info box */
         }
 
         label:hover {
-            background-color: #27ae60;
-            transform: scale(1.05);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        label:focus {
-            outline: none;
+        label:active {
+            transform: translateY(2px);
         }
 
-        /* Initially hide all the information */
+        /* Initially hide all the information inside the button */
         .tank-info {
             display: none;
-            margin-top: 20px;
             padding: 15px;
             background-color: #34495e;
             border-radius: 10px;
             border: 1px solid #555;
             color: #ecf0f1;
+            font-size: 14px;
+            margin-top: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
         }
 
-        /* Display info when the corresponding radio button is checked */
-        #btn-light-tanks:checked ~ .tank-info-light,
-        #btn-medium-tanks:checked ~ .tank-info-medium,
-        #btn-heavy-tanks:checked ~ .tank-info-heavy,
-        #btn-anti-air:checked ~ .tank-info-anti-air,
-        #btn-modern-battle-tanks:checked ~ .tank-info-modern,
-        #btn-self-propelled-guns:checked ~ .tank-info-spg {
+        /* Show the info when the corresponding radio button is checked */
+        input[type="radio"]:checked + label + .tank-info {
             display: block;
+            opacity: 1;
         }
 
-        /* Info box styling */
         .tank-info p {
             margin-bottom: 10px;
         }
@@ -101,7 +118,6 @@
             color: #f39c12;
         }
 
-        /* Add a subtle animation when showing the info */
         .tank-info {
             animation: fadeIn 0.5s ease-in-out;
         }
@@ -123,48 +139,60 @@
         <div class="buttons">
             <!-- Light Tanks -->
             <input type="radio" id="btn-light-tanks" name="tank" />
-            <label for="btn-light-tanks">Light Tanks</label>
-            <div class="tank-info tank-info-light">
+            <label for="btn-light-tanks">
+                Light Tanks
+            </label>
+            <div class="tank-info">
                 <p><strong>Light Tanks:</strong> These tanks are highly mobile and fast, making them perfect for scouting and flanking. In *War Thunder*, use light tanks to capture points, perform reconnaissance, and disrupt enemy lines with quick hits and retreats. Keep moving and avoid direct confrontations with heavier tanks, relying on your speed and agility.</p>
                 <p><strong>Weaknesses:</strong> Light tanks have thin armor and are vulnerable to being destroyed by heavier tanks. They also have lower firepower compared to medium or heavy tanks, making it difficult to engage enemies head-on.</p>
             </div>
 
             <!-- Medium Tanks -->
             <input type="radio" id="btn-medium-tanks" name="tank" />
-            <label for="btn-medium-tanks">Medium Tanks</label>
-            <div class="tank-info tank-info-medium">
+            <label for="btn-medium-tanks">
+                Medium Tanks
+            </label>
+            <div class="tank-info">
                 <p><strong>Medium Tanks:</strong> Medium tanks strike a balance between armor, firepower, and mobility. In *War Thunder*, use them as versatile all-rounders. You can engage both infantry and enemy vehicles, but be cautious of heavier tanks. Try to exploit weak spots in enemy armor while using your mobility to outflank and reposition yourself on the battlefield.</p>
                 <p><strong>Weaknesses:</strong> While balanced, medium tanks can struggle against specialized heavy tanks due to their relatively weaker armor. They also tend to be slower than light tanks, making them vulnerable to fast, nimble opponents.</p>
             </div>
 
             <!-- Heavy Tanks -->
             <input type="radio" id="btn-heavy-tanks" name="tank" />
-            <label for="btn-heavy-tanks">Heavy Tanks</label>
-            <div class="tank-info tank-info-heavy">
+            <label for="btn-heavy-tanks">
+                Heavy Tanks
+            </label>
+            <div class="tank-info">
                 <p><strong>Heavy Tanks:</strong> These tanks are heavily armored and pack a punch, designed to break through enemy lines. In *War Thunder*, heavy tanks excel in direct confrontation. Use them to lead pushes, absorb enemy fire, and engage in prolonged firefights. Be careful of your slower speed, as you'll be an easier target for faster, more agile tanks.</p>
                 <p><strong>Weaknesses:</strong> Heavy tanks are slow and can be easily flanked by faster tanks. Their mobility is limited, which makes them vulnerable to being outmaneuvered by nimble opponents. Despite their heavy armor, weak spots can still be exploited by high-velocity rounds.</p>
             </div>
 
             <!-- Anti-Air Tanks -->
             <input type="radio" id="btn-anti-air" name="tank" />
-            <label for="btn-anti-air">Anti-Air</label>
-            <div class="tank-info tank-info-anti-air">
+            <label for="btn-anti-air">
+                Anti-Air
+            </label>
+            <div class="tank-info">
                 <p><strong>Anti-Air:</strong> These tanks are equipped with high-caliber autocannons or other anti-aircraft weapons. In *War Thunder*, use anti-air tanks to protect your team from enemy aircraft and helicopters. Position yourself strategically near capture points or critical areas and keep an eye on the skies, targeting enemy aircraft with precision.</p>
                 <p><strong>Weaknesses:</strong> Anti-air tanks are usually lightly armored and can be vulnerable to enemy tank fire or infantry. They're also not effective in direct tank-on-tank combat, making them dependent on support from other tank types.</p>
             </div>
 
             <!-- Modern Battle Tanks -->
             <input type="radio" id="btn-modern-battle-tanks" name="tank" />
-            <label for="btn-modern-battle-tanks">Modern Battle Tanks</label>
-            <div class="tank-info tank-info-modern">
+            <label for="btn-modern-battle-tanks">
+                Modern Battle Tanks
+            </label>
+            <div class="tank-info">
                 <p><strong>Modern Battle Tanks:</strong> These are the most advanced tanks, featuring superior armor, modern fire control systems, and advanced weapons. In *War Thunder*, use modern battle tanks to dominate the battlefield. Their superior technology allows you to engage enemies from long range with high accuracy. However, they are still vulnerable to well-placed shots, so be mindful of cover and positioning. Utilize their mobility and firepower to outmaneuver and destroy threats.</p>
                 <p><strong>Weaknesses:</strong> While powerful, modern tanks can still be vulnerable to high-explosive anti-tank rounds (HEAT) or shots to weaker areas such as the rear or top armor. Their reliance on technology means that they can be outperformed by sheer firepower or tactical surprise.</p>
             </div>
 
             <!-- Self-Propelled Guns (SPGs) -->
             <input type="radio" id="btn-self-propelled-guns" name="tank" />
-            <label for="btn-self-propelled-guns">Self-Propelled Guns (SPGs)</label>
-            <div class="tank-info tank-info-spg">
+            <label for="btn-self-propelled-guns">
+                Self-Propelled Guns (SPGs)
+            </label>
+            <div class="tank-info">
                 <p><strong>Self-Propelled Guns (SPGs):</strong> SPGs are artillery pieces mounted on a mobile platform, offering mobile fire support from long distances. In *War Thunder*, use SPGs to provide indirect fire for your team, supporting ground assaults or hitting enemy positions from afar. Position yourself safely behind the front lines, keeping a good distance from enemy vehicles. Make use of their ability to fire over obstacles and take out enemy tanks or infantry at range. Be cautious of enemies closing in on you, as SPGs typically have weak armor.</p>
                 <p><strong>Weaknesses:</strong> SPGs have very weak armor, making them highly vulnerable to enemy fire. If an enemy closes the distance, SPGs are easy targets and can be destroyed quickly. Additionally, their slow turret rotation and limited mobility can make them difficult to reposition in the heat of battle.</p>
             </div>
