@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - HCI Education Portal</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+        }
+
+        header {
+            font-size: 50px;
+            background-color: #4CAF50; /* Green header */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Navigation Styling */
+        nav {
+            background-color: #333; /* Dark background for nav */
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background-color: #575757; /* Darker background on hover */
+        }
+
+        nav a.active {
+            background-color: #4CAF50; /* Highlight the active page link */
+        }
+
+        /* Main Content Styling */
+        main {
+            padding: 20px;
+            max-width: 1200px; /* Limit the width of the main content */
+            margin: auto; /* Center the main content */
+        }
+
+        h2 {
+            color: #4CAF50; /* Green color for section titles */
+            text-align: center; /* Center the title */
+        }
+
+        /* Gallery Styling */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+            gap: 15px; /* Space between images */
+            margin-top: 20px; /* Space above the gallery */
+        }
+
+        .gallery img {
+            width: 100%; /* Make images responsive */
+            border-radius: 5px; /* Rounded corners for images */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        /* Video Embeds Styling */
+        .videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Grid layout for videos */
+            gap: 20px; /* Space between videos */
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 315px; /* Standard YouTube video height */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        footer {
+            background-color: #333; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>HCI Education Portal</h1>
+        <p>Your gateway to learning about HCI principles and practices.</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="gallery.html" class="active">Gallery</a>
+        <a href="resources.html">Resources</a>
+        <a href="about.html">About Us</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main>
+        <h2>Gallery</h2>
+
+        <!-- Images Gallery -->
+        <div class="gallery">
+            <img src="image1.jpg" alt="Description of Image 1">
+            <img src="image2.jpg" alt="Description of Image 2">
+            <img src="image3.jpg" alt="Description of Image 3">
+            <img src="image4.jpg" alt="Description of Image 4">
+            <img src="image5.jpg" alt="Description of Image 5">
+            <img src="image6.jpg" alt="Description of Image 6">
+            <img src="image7.jpg" alt="Description of Image 7">
+            <img src="image8.jpg" alt="Description of Image 8">
+        </div>
+
+        <!-- Video Section -->
+        <h2>Videos</h2>
+        <div class="videos">
+            <!-- YouTube Video 1 -->
+            <iframe src="https://www.youtube.com/embed/cUS_22_lDiM" title="Video 1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            <!-- YouTube Video 2 -->
+            <iframe src="https://www.youtube.com/embed/MA5MaoTWYHY" title="Video 2" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            <!-- YouTube Video 3 -->
+            <iframe src="https://www.youtube.com/embed/B0lltMFTfv8" title="Video 3" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Human-Computer Interaction Education Portal</p>
+    </footer>
+
+</body>
+</html>
