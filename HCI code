@@ -3,123 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tank Types in War Thunder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Number Guessing Game</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #2d3e50;
-            color: #e0e0e0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            background-image: url('https://www.warthunder.com/static/img/bg/cg_header.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
         }
 
-        .container {
+        .game-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.5);
-            max-width: 1000px;
             width: 100%;
-            color: #fff;
+            max-width: 400px;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .game-container:hover {
+            transform: scale(1.05);
         }
 
         h1 {
-            color: #f39c12;
-            font-size: 40px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            font-size: 28px;
+            color: #333;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            justify-items: center;
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        input[type="radio"] {
-            display: none;
-        }
-
-        label {
-            background: linear-gradient(145deg, #6a89cc, #5f6368);
-            color: #fff;
-            font-size: 18px;
-            font-weight: 500;
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-            width: 100%;
-            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        label:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        label:active {
-            transform: translateY(2px);
-        }
-
-        .tank-info {
-            display: none;
-            padding: 20px;
-            background-color: #34495e;
-            border-radius: 15px;
-            border: 1px solid #555;
-            color: #ecf0f1;
+        p {
             font-size: 16px;
-            margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        input[type="radio"]:checked + label + .tank-info {
-            display: block;
-            opacity: 1;
-        }
-
-        .tank-info p {
+            color: #666;
             margin-bottom: 15px;
         }
 
-        .tank-info strong {
-            color: #f39c12;
-            font-weight: bold;
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #2575fc;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .tank-info ul {
-            list-style-type: square;
-            padding-left: 20px;
+        select:focus, input[type="number"]:focus, button:focus {
+            border-color: #6a11cb;
         }
 
-        .tank-info ul li {
-            margin-bottom: 10px;
+        button {
+            background-color: #2575fc;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #6a11cb;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .message {
+            margin: 15px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .score, .attempts, .player-turn {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .reset-button {
+            background-color: #dc3545;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .two-players .game-wrapper {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .two-players .game-container {
+            width: 48%;
+        }
+
+        .mode-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mode-container select {
+            width: 100%;
+            padding: 12px;
+            margin: 0;
+            border-radius: 10px;
         }
 
         @keyframes fadeIn {
@@ -131,87 +139,464 @@
             }
         }
 
-        /* Add responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 32px;
-                margin-bottom: 30px;
-            }
-
-            .buttons {
-                grid-template-columns: 1fr 1fr;
-            }
+        .message, .score, .attempts, .player-turn {
+            animation: fadeIn 1s ease-in-out;
         }
 
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 28px;
-                margin-bottom: 20px;
-            }
-
-            .buttons {
-                grid-template-columns: 1fr;
-            }
+        /* Centered player containers */
+        .player-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
         }
+
+        .player-section input {
+            width: 80%;
+        }
+
+        .player-section button {
+            width: 80%;
+        }
+
+        .game-wrapper {
+            width: 100%;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Tank Types in War Thunder</h1>
+    <div class="game-container">
+        <h1>Guess the Number!</h1>
 
-        <div class="buttons">
-            <!-- Light Tanks -->
-            <input type="radio" id="btn-light-tanks" name="tank" />
-            <label for="btn-light-tanks">Light Tanks</label>
-            <div class="tank-info">
-                <p><strong>Light Tanks:</strong> These tanks are highly mobile and fast, perfect for scouting and flanking. Use light tanks to capture points, perform reconnaissance, and disrupt enemy lines with quick hits and retreats. Avoid direct confrontations with heavier tanks, relying on speed and agility.</p>
-                <p><strong>Weaknesses:</strong> Light tanks have thin armor and are vulnerable to being destroyed by heavier tanks. They also have lower firepower compared to medium or heavy tanks, making it difficult to engage enemies head-on.</p>
+        <div class="mode-container">
+            <div>
+                <p>Choose Mode:</p>
+                <select id="gameMode">
+                    <option value="single">Single Player</option>
+                    <option value="two">Two Player</option>
+                </select>
             </div>
 
-            <!-- Medium Tanks -->
-            <input type="radio" id="btn-medium-tanks" name="tank" />
-            <label for="btn-medium-tanks">Medium Tanks</label>
-            <div class="tank-info">
-                <p><strong>Medium Tanks:</strong> Medium tanks strike a balance between armor, firepower, and mobility. These are versatile all-rounders. You can engage both infantry and enemy vehicles, but be cautious of heavier tanks. Exploit weak spots and use mobility to outflank your enemies.</p>
-                <p><strong>Weaknesses:</strong> Medium tanks can struggle against specialized heavy tanks due to their weaker armor. They are also slower than light tanks, making them vulnerable to fast, nimble opponents.</p>
-            </div>
-
-            <!-- Heavy Tanks -->
-            <input type="radio" id="btn-heavy-tanks" name="tank" />
-            <label for="btn-heavy-tanks">Heavy Tanks</label>
-            <div class="tank-info">
-                <p><strong>Heavy Tanks:</strong> Heavily armored and powerful, these tanks excel in direct confrontations. Lead pushes, absorb fire, and engage in long firefights. Beware of your slower speed, as fast tanks may outmaneuver you.</p>
-                <p><strong>Weaknesses:</strong> Slow and vulnerable to flanking from faster tanks. Despite their armor, they have weak spots that can be exploited by high-velocity rounds.</p>
-            </div>
-
-            <!-- Anti-Air Tanks -->
-            <input type="radio" id="btn-anti-air" name="tank" />
-            <label for="btn-anti-air">Anti-Air</label>
-            <div class="tank-info">
-                <p><strong>Anti-Air:</strong> Equipped with high-caliber autocannons, these tanks protect from enemy aircraft. Position them near critical areas to defend against air threats. Watch the skies and engage aircraft with precision.</p>
-                <p><strong>Weaknesses:</strong> Light armor makes them vulnerable to enemy tank fire or infantry. Not effective in tank-on-tank combat, so rely on support from other tanks.</p>
-            </div>
-
-            <!-- Modern Battle Tanks -->
-            <input type="radio" id="btn-modern-battle-tanks" name="tank" />
-            <label for="btn-modern-battle-tanks">Modern Battle Tanks</label>
-            <div class="tank-info">
-                <p><strong>Modern Battle Tanks:</strong> These advanced tanks offer superior armor, firepower, and technology. Engage enemies at range with accuracy, but remain aware of weak spots and cover.</p>
-                <p><strong>Weaknesses:</strong> Vulnerable to HEAT rounds and weaker areas like the rear or top. May be outperformed by tactical surprise or sheer firepower.</p>
-            </div>
-
-            <!-- Self-Propelled Guns (SPGs) -->
-            <input type="radio" id="btn-self-propelled-guns" name="tank" />
-            <label for="btn-self-propelled-guns">Self-Propelled Guns (SPGs)</label>
-            <div class="tank-info">
-                <p><strong>Self-Propelled Guns (SPGs):</strong> Offering mobile fire support, SPGs are great for indirect attacks. Stay behind the front lines, firing from cover. However, be cautious, as they have weak armor and limited mobility.</p>
-                <p><strong>Weaknesses:</strong> Vulnerable to enemy fire, especially at close range. Their slow turret rotation and low mobility make them easy targets for aggressive enemies.</p>
+            <div>
+                <p>Choose Difficulty:</p>
+                <select id="difficulty">
+                    <option value="easy">Easy (1-50)</option>
+                    <option value="hard">Hard (1-100)</option>
+                </select>
             </div>
         </div>
+
+        <div class="game-wrapper" id="gameWrapper">
+            <div id="player1Section" class="game-container player-section">
+                <p>Player 1's Turn</p>
+                <input type="number" id="guessInput1" min="1" placeholder="Enter your guess">
+                <button id="guessButton1">Guess</button>
+                <div class="score" id="score1">Score: 100</div>
+                <div class="attempts" id="attempts1">Attempts: 0</div>
+            </div>
+
+            <div id="player2Section" class="game-container player-section">
+                <p>Player 2's Turn</p>
+                <input type="number" id="guessInput2" min="1" placeholder="Enter your guess" disabled>
+                <button id="guessButton2" disabled>Guess</button>
+                <div class="score" id="score2">Score: 100</div>
+                <div class="attempts" id="attempts2">Attempts: 0</div>
+            </div>
+        </div>
+
+        <div>
+            <button id="resetButton" class="hidden reset-button">Reset Game</button>
+        </div>
+        <div class="message" id="message"></div>
+        <div class="player-turn" id="playerTurn">Player 1's Turn</div>
     </div>
+
+    <script>
+        let randomNumber;
+        let attempts = 0;
+        let score1 = 100, score2 = 100;
+        let attempts1 = 0, attempts2 = 0;
+        let currentPlayer = 1;
+        let maxAttempts = 10;
+        let maxNumber = 100;
+        let gameMode = 'single'; // default to single player
+
+        let player1Done = false, player2Done = false;
+
+        function setDifficulty() {
+            const difficulty = document.getElementById('difficulty').value;
+            if (difficulty === 'easy') {
+                maxNumber = 50;
+            } else {
+                maxNumber = 100;
+            }
+            startGame();  // Restart game with the new difficulty level
+        }
+
+        function setGameMode() {
+            gameMode = document.getElementById('gameMode').value;
+            startGame(); // Restart the game with the selected mode
+        }
+
+        function startGame() {
+            randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+            attempts = 0;
+            score1 = 100;
+            score2 = 100;
+            attempts1 = 0;
+            attempts2 = 0;
+            player1Done = false;
+            player2Done = false;
+            document.getElementById('message').textContent = '';
+            document.getElementById('score1').textContent = 'Score: 100';
+            document.getElementById('score2').textContent = 'Score: 100';
+            document.getElementById('attempts1').textContent = 'Attempts: 0';
+            document.getElementById('attempts2').textContent = 'Attempts: 0';
+            document.getElementById('resetButton').classList.add('hidden');
+            document.getElementById('guessInput1').value = '';
+            document.getElementById('guessInput2').value = '';
+
+            if (gameMode === 'two') {
+                document.getElementById('player1Section').style.display = 'block';
+                document.getElementById('player2Section').style.display = 'block';
+                document.getElementById('gameWrapper').classList.add('two-players');  // Apply wider layout for two players
+                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
+                enablePlayerTurn();
+            } else {
+                document.getElementById('player1Section').style.display = 'block';
+                document.getElementById('player2Section').style.display = 'none';
+                document.getElementById('gameWrapper').classList.remove('two-players');
+                document.getElementById('playerTurn').textContent = '';
+            }
+        }
+
+        function enablePlayerTurn() {
+            if (currentPlayer === 1) {
+                document.getElementById('guessInput1').disabled = false;
+                document.getElementById('guessButton1').disabled = false;
+                document.getElementById('guessInput2').disabled = true;
+                document.getElementById('guessButton2').disabled = true;
+            } else {
+                document.getElementById('guessInput1').disabled = true;
+                document.getElementById('guessButton1').disabled = true;
+                document.getElementById('guessInput2').disabled = false;
+                document.getElementById('guessButton2').disabled = false;
+            }
+        }
+
+        function nextTurn() {
+            if (gameMode === 'two') {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
+                enablePlayerTurn();
+            }
+        }
+
+        function updateScores() {
+            document.getElementById('score1').textContent = 'Score: ' + score1;
+            document.getElementById('score2').textContent = 'Score: ' + score2;
+            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
+            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
+        }
+
+        function giveHint(player) {
+            if (player === 1 && score1 <= 60) {
+                const rangeStart = Math.max(randomNumber - 10, 1);
+                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
+                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
+            } else if (player === 2 && score2 <= 60) {
+                const rangeStart = Math.max(randomNumber - 10, 1);
+                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
+                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
+            }
+        }
+
+        function checkGameOver() {
+            if (gameMode === 'two' && player1Done && player2Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button
+                if (player2Done) {
+                    document.getElementById('message').textContent += ` The correct number was: ${randomNumber}.`;
+                    document.getElementById('message').style.color = 'red'; // Game over message in red
+                }
+            } else if (player1Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 1 wins
+                document.getElementById('message').style.color = 'green'; // Player 1 won, message in green
+            } else if (player2Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 2 wins
+                document.getElementById('message').style.color = 'green'; // Player 2 won, message in green
+            }
+        }
+
+        document.getElementById('guessButton1').addEventListener('click', function() {
+            const userGuess = Number(document.getElementById('guessInput1').value);
+            attempts1++;
+            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
+
+            if (userGuess === randomNumber) {
+                document.getElementById('message').textContent = 'Player 1 guessed the number!';
+                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
+                player1Done = true;
+            } else {
+                if (attempts1 < maxAttempts) {
+                    if (userGuess < randomNumber) {
+                        document.getElementById('message').textContent = 'Too low!';
+                    } else {
+                        document.getElementById('message').textContent = 'Too high!';
+                    }
+                    score1 -= (100 / maxAttempts);
+                    updateScores();
+                    giveHint(1); // Show the hint if score is below 60
+                } else {
+                    document.getElementById('message').textContent = 'Game over for Player 1!';
+                    document.getElementById('message').style.color = 'red'; // Game over, message in red
+                    player1Done = true;
+                }
+            }
+
+            checkGameOver();
+            if (gameMode === 'two' && userGuess !== randomNumber) {
+                nextTurn();
+            }
+        });
+
+        document.getElementById('guessButton2').addEventListener('click', function() {
+            const userGuess = Number(document.getElementById('guessInput2').value);
+            attempts2++;
+            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
+
+            if (userGuess === randomNumber) {
+                document.getElementById('message').textContent = 'Player 2 guessed the number!';
+                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
+                player2Done = true;
+            } else {
+                if (attempts2 < maxAttempts) {
+                    if (userGuess < randomNumber) {
+                        document.getElementById('message').textContent = 'Too low!';
+                    } else {
+                        document.getElementById('message').textContent = 'Too high!';
+                    }
+                    score2 -= (100 / maxAttempts);
+                    updateScores();
+                    giveHint(2); // Show the hint if score is below 60
+                } else {
+                    document.getElementById('message').textContent = 'Game over for Player 2!';
+                    document.getElementById('message').style.color = 'red'; // Game over, message in red
+                    player2Done = true;
+                }
+            }
+
+            checkGameOver();
+            if (gameMode === 'two' && userGuess !== randomNumber) {
+                nextTurn();
+            }
+        });
+
+        document.getElementById('resetButton').addEventListener('click', startGame);
+
+        // Event listeners to set game mode and difficulty
+        document.getElementById('gameMode').addEventListener('change', setGameMode);
+        document.getElementById('difficulty').addEventListener('change', setDifficulty);
+
+        // Start the game initially
+        startGame();
+    </script>
+</body>
+</html>
+   <div class="player-turn" id="playerTurn">Player 1's Turn</div>
+    </div>
+
+    <script>
+        let randomNumber;
+        let attempts = 0;
+        let score1 = 100, score2 = 100;
+        let attempts1 = 0, attempts2 = 0;
+        let currentPlayer = 1;
+        let maxAttempts = 10;
+        let maxNumber = 100;
+        let gameMode = 'single'; // default to single player
+
+        let player1Done = false, player2Done = false;
+
+        function setDifficulty() {
+            const difficulty = document.getElementById('difficulty').value;
+            if (difficulty === 'easy') {
+                maxNumber = 50;
+            } else {
+                maxNumber = 100;
+            }
+            startGame();  // Restart game with the new difficulty level
+        }
+
+        function setGameMode() {
+            gameMode = document.getElementById('gameMode').value;
+            startGame(); // Restart the game with the selected mode
+        }
+
+        function startGame() {
+            randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+            attempts = 0;
+            score1 = 100;
+            score2 = 100;
+            attempts1 = 0;
+            attempts2 = 0;
+            player1Done = false;
+            player2Done = false;
+            document.getElementById('message').textContent = '';
+            document.getElementById('score1').textContent = 'Score: 100';
+            document.getElementById('score2').textContent = 'Score: 100';
+            document.getElementById('attempts1').textContent = 'Attempts: 0';
+            document.getElementById('attempts2').textContent = 'Attempts: 0';
+            document.getElementById('resetButton').classList.add('hidden');
+            document.getElementById('guessInput1').value = '';
+            document.getElementById('guessInput2').value = '';
+
+            if (gameMode === 'two') {
+                document.getElementById('player1Section').style.display = 'block';
+                document.getElementById('player2Section').style.display = 'block';
+                document.getElementById('gameWrapper').classList.add('two-players');  // Apply wider layout for two players
+                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
+                enablePlayerTurn();
+            } else {
+                document.getElementById('player1Section').style.display = 'block';
+                document.getElementById('player2Section').style.display = 'none';
+                document.getElementById('gameWrapper').classList.remove('two-players');
+                document.getElementById('playerTurn').textContent = '';
+            }
+        }
+
+        function enablePlayerTurn() {
+            if (currentPlayer === 1) {
+                document.getElementById('guessInput1').disabled = false;
+                document.getElementById('guessButton1').disabled = false;
+                document.getElementById('guessInput2').disabled = true;
+                document.getElementById('guessButton2').disabled = true;
+            } else {
+                document.getElementById('guessInput1').disabled = true;
+                document.getElementById('guessButton1').disabled = true;
+                document.getElementById('guessInput2').disabled = false;
+                document.getElementById('guessButton2').disabled = false;
+            }
+        }
+
+        function nextTurn() {
+            if (gameMode === 'two') {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
+                enablePlayerTurn();
+            }
+        }
+
+        function updateScores() {
+            document.getElementById('score1').textContent = 'Score: ' + score1;
+            document.getElementById('score2').textContent = 'Score: ' + score2;
+            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
+            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
+        }
+
+        function giveHint(player) {
+            if (player === 1 && score1 <= 60) {
+                const rangeStart = Math.max(randomNumber - 10, 1);
+                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
+                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
+            } else if (player === 2 && score2 <= 60) {
+                const rangeStart = Math.max(randomNumber - 10, 1);
+                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
+                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
+            }
+        }
+
+        function checkGameOver() {
+            if (gameMode === 'two' && player1Done && player2Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button
+                if (player2Done) {
+                    document.getElementById('message').textContent += ` The correct number was: ${randomNumber}.`;
+                    document.getElementById('message').style.color = 'red'; // Game over message in red
+                }
+            } else if (player1Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 1 wins
+                document.getElementById('message').style.color = 'green'; // Player 1 won, message in green
+            } else if (player2Done) {
+                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 2 wins
+                document.getElementById('message').style.color = 'green'; // Player 2 won, message in green
+            }
+        }
+
+        document.getElementById('guessButton1').addEventListener('click', function() {
+            const userGuess = Number(document.getElementById('guessInput1').value);
+            attempts1++;
+            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
+
+            if (userGuess === randomNumber) {
+                document.getElementById('message').textContent = 'Player 1 guessed the number!';
+                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
+                player1Done = true;
+            } else {
+                if (attempts1 < maxAttempts) {
+                    if (userGuess < randomNumber) {
+                        document.getElementById('message').textContent = 'Too low!';
+                    } else {
+                        document.getElementById('message').textContent = 'Too high!';
+                    }
+                    score1 -= (100 / maxAttempts);
+                    updateScores();
+                    giveHint(1); // Show the hint if score is below 60
+                } else {
+                    document.getElementById('message').textContent = 'Game over for Player 1!';
+                    document.getElementById('message').style.color = 'red'; // Game over, message in red
+                    player1Done = true;
+                }
+            }
+
+            checkGameOver();
+            if (gameMode === 'two' && userGuess !== randomNumber) {
+                nextTurn();
+            }
+        });
+
+        document.getElementById('guessButton2').addEventListener('click', function() {
+            const userGuess = Number(document.getElementById('guessInput2').value);
+            attempts2++;
+            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
+
+            if (userGuess === randomNumber) {
+                document.getElementById('message').textContent = 'Player 2 guessed the number!';
+                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
+                player2Done = true;
+            } else {
+                if (attempts2 < maxAttempts) {
+                    if (userGuess < randomNumber) {
+                        document.getElementById('message').textContent = 'Too low!';
+                    } else {
+                        document.getElementById('message').textContent = 'Too high!';
+                    }
+                    score2 -= (100 / maxAttempts);
+                    updateScores();
+                    giveHint(2); // Show the hint if score is below 60
+                } else {
+                    document.getElementById('message').textContent = 'Game over for Player 2!';
+                    document.getElementById('message').style.color = 'red'; // Game over, message in red
+                    player2Done = true;
+                }
+            }
+
+            checkGameOver();
+            if (gameMode === 'two' && userGuess !== randomNumber) {
+                nextTurn();
+            }
+        });
+
+        document.getElementById('resetButton').addEventListener('click', startGame);
+
+        // Event listeners to set game mode and difficulty
+        document.getElementById('gameMode').addEventListener('change', setGameMode);
+        document.getElementById('difficulty').addEventListener('change', setDifficulty);
+
+        // Start the game initially
+        startGame();
+    </script>
 </body>
 </html>
