@@ -237,14 +237,14 @@
         let attempts1 = 0, attempts2 = 0;
         let currentPlayer = 1;
         let maxAttempts = 10;
-        let maxNumber = 100;
+        let maxNumber = 100; // Default max number
         let gameMode = 'single'; // default to single player
 
         let player1Done = false, player2Done = false;
 
         function setDifficulty() {
             const difficulty = document.getElementById('difficulty').value;
-            maxNumber = difficulty === 'easy' ? 50 : 100;
+            maxNumber = difficulty === 'easy' ? 50 : 100; // Set max number based on difficulty
             startGame();  // Restart game with the new difficulty level
         }
 
