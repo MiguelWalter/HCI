@@ -108,12 +108,12 @@
         }
 
         .two-players .game-wrapper {
-            flex-direction: row;
-            justify-content: space-between;
+            flex-direction: row; /* Arrange children in a row */
+            justify-content: space-between; /* Space between the player sections */
         }
 
         .two-players .game-container {
-            width: 48%;
+            width: 48%; /* Set width to allow both containers to fit side by side */
         }
 
         .mode-container {
@@ -162,6 +162,21 @@
             width: 80%;
         }
 
+        .single-player {
+            background-color: #f0f8ff; /* Light blue background for Player 1 */
+            border: 2px solid #2575fc; /* Blue border */
+            padding: 10px; /* Reduced padding */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            width: 80%; /* Set a smaller width */
+            max-width: 300px; /* Maximum width for the container */
+            margin: 0 auto; /* Center the container */
+        }
+
+        .single-player p, .single-player input, .single-player button, .single-player .score, .single-player .attempts {
+            font-size: 14px; /* Smaller font size */
+        }
+
         .game-wrapper {
             width: 100%;
         }
@@ -191,7 +206,7 @@
         </div>
 
         <div class="game-wrapper" id="gameWrapper">
-            <div id="player1Section" class="game-container player-section">
+            <div id="player1Section" class="game-container player-section single-player">
                 <p>Player 1's Turn</p>
                 <input type="number" id="guessInput1" min="1" placeholder="Enter your guess">
                 <button id="guessButton1">Guess</button>
@@ -199,7 +214,7 @@
                 <div class="attempts" id="attempts1">Attempts: 0</div>
             </div>
 
-            <div id="player2Section" class="game-container player-section">
+            <div id="player2Section" class="game-container player-section single-player">
                 <p>Player 2's Turn</p>
                 <input type="number" id="guessInput2" min="1" placeholder="Enter your guess" disabled>
                 <button id="guessButton2" disabled>Guess</button>
@@ -229,11 +244,7 @@
 
         function setDifficulty() {
             const difficulty = document.getElementById('difficulty').value;
-            if (difficulty === 'easy') {
-                maxNumber = 50;
-            } else {
-                maxNumber = 100;
-            }
+            maxNumber = difficulty === 'easy' ? 50 : 100;
             startGame();  // Restart game with the new difficulty level
         }
 
@@ -243,228 +254,34 @@
         }
 
         function startGame() {
-            randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+            randomNumber = Math.floor(Math.random() * maxNumber) + 1; // Generate random number based on maxNumber
             attempts = 0;
             score1 = 100;
-            score2 = 100;
             attempts1 = 0;
-            attempts2 = 0;
+            score2 = 100; // Reset Player 2's score
+            attempts2 = 0; // Reset Player 2's attempts
             player1Done = false;
-            player2Done = false;
+            player2Done = false; // Reset Player 2's done status
+
             document.getElementById('message').textContent = '';
             document.getElementById('score1').textContent = 'Score: 100';
-            document.getElementById('score2').textContent = 'Score: 100';
             document.getElementById('attempts1').textContent = 'Attempts: 0';
-            document.getElementById('attempts2').textContent = 'Attempts: 0';
+            document.getElementById('score2').textContent = 'Score: 100'; // Reset Player 2's score display
+            document.getElementById('attempts2').textContent = 'Attempts: 0'; // Reset Player 2's attempts display
             document.getElementById('resetButton').classList.add('hidden');
             document.getElementById('guessInput1').value = '';
-            document.getElementById('guessInput2').value = '';
+            document.getElementById('guessInput2').value = ''; // Clear Player 2's input
 
-            if (gameMode === 'two') {
+            if (gameMode === 'single') {
+                document.getElementById('player1Section').style.display = 'block';
+                document.getElementById('player2Section').style.display = 'none'; // Hide Player 2 section
+                document.getElementById('playerTurn').textContent = 'Player 1\'s Turn';
+            } else {
                 document.getElementById('player1Section').style.display = 'block';
                 document.getElementById('player2Section').style.display = 'block';
                 document.getElementById('gameWrapper').classList.add('two-players');  // Apply wider layout for two players
                 document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
                 enablePlayerTurn();
-            } else {
-                document.getElementById('player1Section').style.display = 'block';
-                document.getElementById('player2Section').style.display = 'none';
-                document.getElementById('gameWrapper').classList.remove('two-players');
-                document.getElementById('playerTurn').textContent = '';
-            }
-        }
-
-        function enablePlayerTurn() {
-            if (currentPlayer === 1) {
-                document.getElementById('guessInput1').disabled = false;
-                document.getElementById('guessButton1').disabled = false;
-                document.getElementById('guessInput2').disabled = true;
-                document.getElementById('guessButton2').disabled = true;
-            } else {
-                document.getElementById('guessInput1').disabled = true;
-                document.getElementById('guessButton1').disabled = true;
-                document.getElementById('guessInput2').disabled = false;
-                document.getElementById('guessButton2').disabled = false;
-            }
-        }
-
-        function nextTurn() {
-            if (gameMode === 'two') {
-                currentPlayer = currentPlayer === 1 ? 2 : 1;
-                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
-                enablePlayerTurn();
-            }
-        }
-
-        function updateScores() {
-            document.getElementById('score1').textContent = 'Score: ' + score1;
-            document.getElementById('score2').textContent = 'Score: ' + score2;
-            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
-            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
-        }
-
-        function giveHint(player) {
-            if (player === 1 && score1 <= 60) {
-                const rangeStart = Math.max(randomNumber - 10, 1);
-                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
-                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
-            } else if (player === 2 && score2 <= 60) {
-                const rangeStart = Math.max(randomNumber - 10, 1);
-                const rangeEnd = Math.min(randomNumber + 10, maxNumber);
-                document.getElementById('message').textContent += ` Hint: The number is between ${rangeStart} and ${rangeEnd}.`;
-            }
-        }
-
-        function checkGameOver() {
-            if (gameMode === 'two' && player1Done && player2Done) {
-                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button
-                if (player2Done) {
-                    document.getElementById('message').textContent += ` The correct number was: ${randomNumber}.`;
-                    document.getElementById('message').style.color = 'red'; // Game over message in red
-                }
-            } else if (player1Done) {
-                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 1 wins
-                document.getElementById('message').style.color = 'green'; // Player 1 won, message in green
-            } else if (player2Done) {
-                document.getElementById('resetButton').classList.remove('hidden'); // Show reset button after Player 2 wins
-                document.getElementById('message').style.color = 'green'; // Player 2 won, message in green
-            }
-        }
-
-        document.getElementById('guessButton1').addEventListener('click', function() {
-            const userGuess = Number(document.getElementById('guessInput1').value);
-            attempts1++;
-            document.getElementById('attempts1').textContent = 'Attempts: ' + attempts1;
-
-            if (userGuess === randomNumber) {
-                document.getElementById('message').textContent = 'Player 1 guessed the number!';
-                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
-                player1Done = true;
-            } else {
-                if (attempts1 < maxAttempts) {
-                    if (userGuess < randomNumber) {
-                        document.getElementById('message').textContent = 'Too low!';
-                    } else {
-                        document.getElementById('message').textContent = 'Too high!';
-                    }
-                    score1 -= (100 / maxAttempts);
-                    updateScores();
-                    giveHint(1); // Show the hint if score is below 60
-                } else {
-                    document.getElementById('message').textContent = 'Game over for Player 1!';
-                    document.getElementById('message').style.color = 'red'; // Game over, message in red
-                    player1Done = true;
-                }
-            }
-
-            checkGameOver();
-            if (gameMode === 'two' && userGuess !== randomNumber) {
-                nextTurn();
-            }
-        });
-
-        document.getElementById('guessButton2').addEventListener('click', function() {
-            const userGuess = Number(document.getElementById('guessInput2').value);
-            attempts2++;
-            document.getElementById('attempts2').textContent = 'Attempts: ' + attempts2;
-
-            if (userGuess === randomNumber) {
-                document.getElementById('message').textContent = 'Player 2 guessed the number!';
-                document.getElementById('message').style.color = 'green'; // Correct guess, message in green
-                player2Done = true;
-            } else {
-                if (attempts2 < maxAttempts) {
-                    if (userGuess < randomNumber) {
-                        document.getElementById('message').textContent = 'Too low!';
-                    } else {
-                        document.getElementById('message').textContent = 'Too high!';
-                    }
-                    score2 -= (100 / maxAttempts);
-                    updateScores();
-                    giveHint(2); // Show the hint if score is below 60
-                } else {
-                    document.getElementById('message').textContent = 'Game over for Player 2!';
-                    document.getElementById('message').style.color = 'red'; // Game over, message in red
-                    player2Done = true;
-                }
-            }
-
-            checkGameOver();
-            if (gameMode === 'two' && userGuess !== randomNumber) {
-                nextTurn();
-            }
-        });
-
-        document.getElementById('resetButton').addEventListener('click', startGame);
-
-        // Event listeners to set game mode and difficulty
-        document.getElementById('gameMode').addEventListener('change', setGameMode);
-        document.getElementById('difficulty').addEventListener('change', setDifficulty);
-
-        // Start the game initially
-        startGame();
-    </script>
-</body>
-</html>
-   <div class="player-turn" id="playerTurn">Player 1's Turn</div>
-    </div>
-
-    <script>
-        let randomNumber;
-        let attempts = 0;
-        let score1 = 100, score2 = 100;
-        let attempts1 = 0, attempts2 = 0;
-        let currentPlayer = 1;
-        let maxAttempts = 10;
-        let maxNumber = 100;
-        let gameMode = 'single'; // default to single player
-
-        let player1Done = false, player2Done = false;
-
-        function setDifficulty() {
-            const difficulty = document.getElementById('difficulty').value;
-            if (difficulty === 'easy') {
-                maxNumber = 50;
-            } else {
-                maxNumber = 100;
-            }
-            startGame();  // Restart game with the new difficulty level
-        }
-
-        function setGameMode() {
-            gameMode = document.getElementById('gameMode').value;
-            startGame(); // Restart the game with the selected mode
-        }
-
-        function startGame() {
-            randomNumber = Math.floor(Math.random() * maxNumber) + 1;
-            attempts = 0;
-            score1 = 100;
-            score2 = 100;
-            attempts1 = 0;
-            attempts2 = 0;
-            player1Done = false;
-            player2Done = false;
-            document.getElementById('message').textContent = '';
-            document.getElementById('score1').textContent = 'Score: 100';
-            document.getElementById('score2').textContent = 'Score: 100';
-            document.getElementById('attempts1').textContent = 'Attempts: 0';
-            document.getElementById('attempts2').textContent = 'Attempts: 0';
-            document.getElementById('resetButton').classList.add('hidden');
-            document.getElementById('guessInput1').value = '';
-            document.getElementById('guessInput2').value = '';
-
-            if (gameMode === 'two') {
-                document.getElementById('player1Section').style.display = 'block';
-                document.getElementById('player2Section').style.display = 'block';
-                document.getElementById('gameWrapper').classList.add('two-players');  // Apply wider layout for two players
-                document.getElementById('playerTurn').textContent = `Player ${currentPlayer}'s Turn`;
-                enablePlayerTurn();
-            } else {
-                document.getElementById('player1Section').style.display = 'block';
-                document.getElementById('player2Section').style.display = 'none';
-                document.getElementById('gameWrapper').classList.remove('two-players');
-                document.getElementById('playerTurn').textContent = '';
             }
         }
 
