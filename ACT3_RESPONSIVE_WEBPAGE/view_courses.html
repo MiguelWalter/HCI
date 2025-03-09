@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course List</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #388e3c; /* Green */
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+    .course-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    .course {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .course:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    .course h2 {
+      font-size: 20px;
+      color: #388e3c; /* Green */
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .course p {
+      font-size: 14px;
+      color: #7f8c8d;
+      text-align: center;
+    }
+    .show-details {
+      background-color: #388e3c; /* Green */
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+    .show-details:hover {
+      background-color: #2e7d32; /* Darker Green for hover */
+    }
+    .course-details {
+      display: none;
+      background-color: #f8f9fa;
+      padding: 15px;
+      font-size: 14px;
+      color: #555;
+      margin-top: 15px;
+    }
+    .course-details h3 {
+      font-size: 16px;
+      color: #2c3e50;
+    }
+    .course-details img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+    .course-details ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    .course-details p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Available Courses</h1>
+    <div class="course-list">
+      <!-- Architecture -->
+      <div class="course" data-id="1">
+        <h2>Architecture</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Learn the principles of architecture, from designing structures to urban planning and sustainability in construction.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Architectural Design & Drawing</li>
+            <li>Building Materials</li>
+            <li>Urban Planning & Landscape Architecture</li>
+            <li>Environmental Sustainability</li>
+          </ul>
+          <p><strong>Duration:</strong> 12 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Architecture Image">
+        </div>
+      </div>
+
+      <!-- Arts & Sciences -->
+      <div class="course" data-id="2">
+        <h2>Arts & Sciences</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>This program offers foundational knowledge in both the arts and sciences, equipping students with a wide range of skills.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Introduction to Philosophy</li>
+            <li>Basic Psychology</li>
+            <li>Physics & Mathematics</li>
+            <li>History & Culture</li>
+          </ul>
+          <p><strong>Duration:</strong> 10 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Arts & Sciences Image">
+        </div>
+      </div>
+
+      <!-- Aviation -->
+      <div class="course" data-id="3">
+        <h2>Aviation</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>This course prepares students for a career in aviation, focusing on flight operations, air traffic control, and aircraft maintenance.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Flight Mechanics</li>
+            <li>Air Traffic Control Systems</li>
+            <li>Aircraft Maintenance</li>
+            <li>Aviation Safety & Regulations</li>
+          </ul>
+          <p><strong>Duration:</strong> 20 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Aviation Image">
+        </div>
+      </div>
+
+      <!-- Business -->
+      <div class="course" data-id="4">
+        <h2>Business</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Explore the essentials of business management, marketing, and entrepreneurship in this comprehensive course.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Business Strategies</li>
+            <li>Marketing & Sales</li>
+            <li>Financial Management</li>
+            <li>Entrepreneurship</li>
+          </ul>
+          <p><strong>Duration:</strong> 15 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Business Image">
+        </div>
+      </div>
+
+      <!-- Criminology -->
+      <div class="course" data-id="5">
+        <h2>Criminology</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Study the causes of crime and the functioning of criminal justice systems in society.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Crime Theories</li>
+            <li>Criminal Law</li>
+            <li>Forensic Science</li>
+            <li>Criminal Justice System</li>
+          </ul>
+          <p><strong>Duration:</strong> 14 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Criminology Image">
+        </div>
+      </div>
+
+      <!-- Engineering -->
+      <div class="course" data-id="6">
+        <h2>Engineering</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Gain a solid foundation in various fields of engineering, including mechanical, electrical, and civil engineering.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Mechanical Engineering Principles</li>
+            <li>Circuit Design and Analysis</li>
+            <li>Materials Science</li>
+            <li>Structural Engineering</li>
+          </ul>
+          <p><strong>Duration:</strong> 18 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Engineering Image">
+        </div>
+      </div>
+
+      <!-- ETEEAP -->
+      <div class="course" data-id="7">
+        <h2>ETEEAP</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>This program is designed for individuals who wish to obtain a degree based on their work experience and previous learning.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Credit Evaluation Process</li>
+            <li>Prior Learning Assessment</li>
+            <li>Accreditation and Recognition</li>
+          </ul>
+          <p><strong>Duration:</strong> 16 hours</p>
+          <img src="https://via.placeholder.com/300" alt="ETEEAP Image">
+        </div>
+      </div>
+
+      <!-- Information Technology Education -->
+      <div class="course" data-id="8">
+        <h2>Information Technology Education</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>This course focuses on the key areas of IT including programming, data management, and network administration.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Programming Fundamentals</li>
+            <li>Database Management Systems</li>
+            <li>Networking & Security</li>
+            <li>Web Development</li>
+          </ul>
+          <p><strong>Duration:</strong> 22 hours</p>
+          <img src="https://via.placeholder.com/300" alt="IT Education Image">
+        </div>
+      </div>
+
+      <!-- International Tourism and Hospitality Management -->
+      <div class="course" data-id="9">
+        <h2>International Tourism</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Learn how to manage the dynamic and global tourism and hospitality industry through comprehensive management strategies.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Tourism Industry Overview</li>
+            <li>Hospitality Management</li>
+            <li>Customer Service & Experience</li>
+            <li>Marketing in Tourism</li>
+          </ul>
+          <p><strong>Duration:</strong> 20 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Tourism Image">
+        </div>
+      </div>
+
+      <!-- Maritime Education -->
+      <div class="course" data-id="10">
+        <h2>Maritime Education</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>This course provides students with the essential knowledge to work in the maritime and shipping industries.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Ship Operations & Safety</li>
+            <li>Navigation Systems</li>
+            <li>Marine Engineering</li>
+            <li>International Maritime Law</li>
+          </ul>
+          <p><strong>Duration:</strong> 24 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Maritime Image">
+        </div>
+      </div>
+
+      <!-- Medical and Allied Health -->
+      <div class="course" data-id="11">
+        <h2>Medical and Allied Health</h2>
+        <button class="show-details">View Details</button>
+        <div class="course-details">
+          <p>Prepare for a career in the healthcare industry with knowledge in medical procedures, healthcare systems, and allied health professions.</p>
+          <h3>Topics Covered:</h3>
+          <ul>
+            <li>Medical Terminology</li>
+            <li>Healthcare Systems and Management</li>
+            <li>Human Anatomy & Physiology</li>
+            <li>Allied Health Professions</li>
+          </ul>
+          <p><strong>Duration:</strong> 30 hours</p>
+          <img src="https://via.placeholder.com/300" alt="Medical Image">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('.show-details');
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        const course = button.closest('.course');
+        const details = course.querySelector('.course-details');
+        details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        button.textContent = details.style.display === 'block' ? 'Hide Details' : 'View Details';
+      });
+    });
+  </script>
+</body>
+</html>

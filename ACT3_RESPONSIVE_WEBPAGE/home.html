@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - HCI System</title>
+    <style>
+        /* Same CSS as before */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .card {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+    <script>
+        // Retrieve currentUser from localStorage
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Check if currentUser exists and is logged in
+        if (!currentUser || !currentUser.isLoggedIn) {
+            window.location.href = 'HCI user.html'; // Redirect to login if not logged in
+        }
+
+        // Display username in the welcome message
+        window.onload = function() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+            } else {
+                // If no currentUser or incorrect data, redirect to login
+                window.location.href = 'HCI user.html';
+            }
+        };
+
+        // Function to handle logout
+        function logout() {
+            currentUser.isLoggedIn = false;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser)); // Remove the logged-in state
+            window.location.href = 'HCI user.html'; // Redirect to login page after logout
+        }
+
+        // Function to check user role before accessing certain pages
+        function checkRoleAndRedirect(page) {
+            if (page === 'create_course' && (currentUser.role !== 'instructor' && currentUser.role !== 'admin')) {
+                showErrorMessage('You do not have permission to create courses.');
+            } else if (page === 'manage_users' && currentUser.role !== 'admin') {
+                showErrorMessage('You do not have permission to manage users.');
+            } else {
+                // Redirect to the appropriate page if user has the right role
+                if (page === 'create_course') {
+                    window.location.href = 'Course Creation Code.html';
+                } else if (page === 'manage_users') {
+                    window.location.href = 'manage_users.html';
+                }
+            }
+        }
+
+        // Function to show error message when user doesn't have permission
+        function showErrorMessage(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+        }
+    </script>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Welcome to the HCI System</h1>
+    </div>
+
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Hello, <span id="userName"></span>!</h2>
+            <p>Welcome back to the HCI system. From here, you can manage courses and more based on your role.</p>
+        </div>
+
+        <!-- Error Message Container -->
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- Cards for different functionalities -->
+        <div class="card">
+            <h2>View Your Courses</h2>
+            <p>View and interact with your current courses.</p>
+            <a href="view_courses.html" class="btn">View Courses</a>
+        </div>
+
+        <div class="card">
+            <h2>Manage Courses</h2>
+            <p>If you're an instructor or admin, you can create and manage courses here.</p>
+            <button class="btn" onclick="checkRoleAndRedirect('create_course')">Create New Course</button>
+        </div>
+
+        <div class="card">
+            <h2>Manage Users</h2>
+            <p>If you're an admin, you can manage users in the system.</p>
+            <button class="btn" onclick="checkRoleAndRedirect('manage_users')">Manage Users</button>
+        </div>
+
+        <div class="card">
+            <h2>Logout</h2>
+            <button onclick="logout()" class="btn logout">Logout</button>
+        </div>
+    </div>
+
+</body>
+</html>

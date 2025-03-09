@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - HCI System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .notification {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let currentUser = null;
+
+        // Function to handle user login
+        function loginUser() {
+            const email = document.getElementById('loginEmail').value;
+            currentUser = users.find(u => u.email === email);
+
+            if (!currentUser) {
+                showNotification('User not found!', 'error');
+                return;
+            }
+
+            currentUser.isLoggedIn = true;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            showNotification(`${currentUser.name} logged in successfully!`, 'success');
+            redirectToRoleBasedPage();
+        }
+
+        // Redirect users based on their role after login
+        function redirectToRoleBasedPage() {
+            if (!currentUser) return;
+
+            if (currentUser.role === 'student' || currentUser.role === 'instructor' || currentUser.role === 'admin') {
+                window.location.href = 'home.html'; // All users redirect to home.html
+            }
+        }
+
+        // Show notification message
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Function to create a new user
+        function createUser() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const role = document.getElementById('userRole').value;
+            const password = document.getElementById('userPassword').value;
+
+            if (!name || !email || !role || !password) {
+                showNotification('Please fill in all fields.', 'error');
+                return;
+            }
+
+            const newUser = {
+                name,
+                email,
+                role,
+                password,
+                isLoggedIn: false
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            showNotification('User created successfully!', 'success');
+            clearUserForm();
+        }
+
+        // Function to clear user creation form
+        function clearUserForm() {
+            document.getElementById('userName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userRole').value = 'student';
+            document.getElementById('userPassword').value = '';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>HCI System</h1>
+        <div class="form-container">
+            <h2>Login</h2>
+            <form onsubmit="event.preventDefault(); loginUser();">
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                <button type="submit">Login</button>
+            </form>
+
+            <p>Don't have an account? <button onclick="document.getElementById('createUserForm').style.display = 'block';">Create User</button></p>
+        </div>
+
+        <!-- Create User Form -->
+        <div id="createUserForm" class="form-container" style="display:none;">
+            <h2>Create a New User</h2>
+            <form onsubmit="event.preventDefault(); createUser();">
+                <input type="text" id="userName" placeholder="Full Name" required>
+                <input type="email" id="userEmail" placeholder="Email Address" required>
+                <select id="userRole">
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <input type="password" id="userPassword" placeholder="Password" required>
+                <button type="submit">Create User</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
