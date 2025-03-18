@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image Gallery</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #ADD8E6; /* Light blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 70vh;
+            overflow: hidden;
+            border-radius: 15px;
+            border: 5px solid #1E90FF;
+            background-color: #f0f8ff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .gallery-container:hover {
+            transform: scale(1.05);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: grab;
+            overflow: hidden;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            position: absolute;
+            transition: transform 0.25s ease, opacity 0.5s ease; /* Add opacity transition for fade-in effect */
+            opacity: 0;
+            visibility: hidden; /* Hide all images initially */
+        }
+
+        .gallery-image.active {
+            opacity: 1;
+            visibility: visible; /* Make the active image visible */
+        }
+
+        .date-time-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 3rem;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .zoomed {
+            transform: scale(2);
+            cursor: grabbing;
+        }
+
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            color: white;
+            border-radius: 10px;
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Increased space between controls */
+            z-index: 15;
+            width: 200px; /* Set width for consistent control width */
+            transition: transform 0.3s ease;
+        }
+
+        .controls label {
+            display: block; /* Ensure label takes up full width */
+            font-size: 0.9rem; /* Slightly smaller font size for clarity */
+            margin-bottom: 5px; /* Space between label and slider */
+        }
+
+        .controls input {
+            width: 100%; /* Full width for sliders */
+            margin-bottom: 10px; /* Space between sliders */
+        }
+
+        .angle-display {
+            font-size: 1.1rem;
+            margin-top: 5px;
+            color: #FFF;
+        }
+
+        .minimize-button {
+            position: absolute;
+            top: 10px;
+            right: 220px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 1.5rem;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 20;
+            transition: background-color 0.3s ease;
+        }
+
+        .minimize-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .collapsed {
+            transform: translateX(250px); /* Shift controls to the right when collapsed */
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                width: 95%;
+                height: 60vh;
+            }
+            .nav-button {
+                font-size: 2rem;
+                padding: 10px;
+            }
+            .minimize-button {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-container {
+                width: 95%;
+                height: 50vh;
+            }
+            .nav-button {
+                font-size: 1.5rem;
+                padding: 8px;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="gallery-container">
+    <div class="image-container">
+        <!-- Images will switch between active/inactive -->
+        <img src="image 1.jpg" alt="Image 1" class="gallery-image" id="image1">
+        <img src="image 2.jpg" alt="Image 2" class="gallery-image" id="image2">
+        <img src="image 3.jpg" alt="Image 3" class="gallery-image" id="image3">
+        <img src="image 4.jpg" alt="Image 4" class="gallery-image" id="image4">
+        <img src="image 5.jpg" alt="Image 5" class="gallery-image" id="image5">
+        
+        <div class="date-time-overlay" id="dateTime"></div>
+    </div>
+
+    <button class="nav-button prev" id="prevBtn">&#10094;</button>
+    <button class="nav-button next" id="nextBtn">&#10095;</button>
+    
+    <button class="minimize-button" id="minimizeBtn">&#x2192;</button> <!-- Minimize Button -->
+    
+    <div class="controls" id="controls">
+        <label>Rotate: <input type="range" id="rotateSlider" min="0" max="360" step="1" value="0"></label>
+        <div class="angle-display" id="angleDisplay">Angle: 0°</div>
+        <label>Brightness: <input type="range" id="brightnessSlider" min="0" max="2" step="0.1" value="1"></label>
+        <label>Contrast: <input type="range" id="contrastSlider" min="0" max="2" step="0.1" value="1"></label>
+        <label>Saturation: <input type="range" id="saturationSlider" min="0" max="2" step="0.1" value="1"></label>
+    </div>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const images = [
+        { src: "image 1.jpg", takenDate: "2025-03-18 12:00:00" },
+        { src: "image 2.jpg", takenDate: "2025-03-17 09:30:00" },
+        { src: "image 3.jpg", takenDate: "2025-03-16 15:45:00" },
+        { src: "image 4.jpg", takenDate: "2025-03-15 20:20:00" },
+        { src: "image 5.jpg", takenDate: "2025-03-14 07:10:00" }
+    ];
+
+    const galleryImages = document.querySelectorAll(".gallery-image");
+    const dateTimeElement = document.getElementById("dateTime");
+    const rotateSlider = document.getElementById("rotateSlider");
+    const brightnessSlider = document.getElementById("brightnessSlider");
+    const contrastSlider = document.getElementById("contrastSlider");
+    const saturationSlider = document.getElementById("saturationSlider");
+    const angleDisplay = document.getElementById("angleDisplay");
+    const controls = document.getElementById("controls");
+    const minimizeBtn = document.getElementById("minimizeBtn");
+
+    // Function to change the image and show its taken date
+    function changeImage() {
+        galleryImages.forEach((img, index) => {
+            img.classList.remove("active"); // Remove active class from all images
+            if (index === currentIndex) {
+                img.classList.add("active"); // Add active class to the current image
+            }
+        });
+        updateDateTime();
+    }
+
+    // Function to update date and time
+    function updateDateTime() {
+        const image = images[currentIndex];
+        dateTimeElement.textContent = `Picture taken on: ${image.takenDate}`;
+    }
+
+    // Next button click event
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        changeImage();
+    });
+
+    // Previous button click event
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = images.length - 1;
+        }
+        changeImage();
+    });
+
+    // Function to toggle zoom in and out
+    function toggleZoom() {
+        const currentImage = galleryImages[currentIndex];
+        currentImage.classList.toggle("zoomed");
+        currentImage.style.cursor = currentImage.classList.contains("zoomed") ? "grabbing" : "pointer";
+    }
+
+    // Function to update the image styles based on sliders
+    function updateImageStyles() {
+        const currentImage = galleryImages[currentIndex];
+        const rotateValue = rotateSlider.value;
+        const brightnessValue = brightnessSlider.value;
+        const contrastValue = contrastSlider.value;
+        const saturationValue = saturationSlider.value;
+
+        currentImage.style.transform = `rotate(${rotateValue}deg)`;
+        currentImage.style.filter = `brightness(${brightnessValue}) contrast(${contrastValue}) saturate(${saturationValue})`;
+
+        // Update angle display
+        angleDisplay.textContent = `Angle: ${rotateValue}°`;
+    }
+
+    // Add event listeners for zooming
+    galleryImages.forEach(image => {
+        image.addEventListener('click', toggleZoom);
+    });
+
+    // Add event listeners for sliders
+    rotateSlider.addEventListener('input', updateImageStyles);
+    brightnessSlider.addEventListener('input', updateImageStyles);
+    contrastSlider.addEventListener('input', updateImageStyles);
+    saturationSlider.addEventListener('input', updateImageStyles);
+
+    // Minimize button event to toggle controls visibility
+    minimizeBtn.addEventListener('click', () => {
+        controls.classList.toggle("collapsed");
+        minimizeBtn.textContent = controls.classList.contains("collapsed") ? "&#x2193;" : "&#x2192;"; // Change arrow direction
+    });
+
+    // Initialize the first image and its taken date
+    changeImage();
+</script>
+
+</body>
+</html>
