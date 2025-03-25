@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 5% auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+            width: 100%;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .success {
+            color: green;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enrollment Form</h1>
+        <form id="enrollmentForm" action="#" method="POST" onsubmit="return validateForm()">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+            <div id="firstNameError" class="error"></div>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+            <div id="lastNameError" class="error"></div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+            <div id="dobError" class="error"></div>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" required>
+            <div id="phoneError" class="error"></div>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="4" required></textarea>
+            <div id="addressError" class="error"></div>
+
+            <label for="course">Course Interested In:</label>
+            <select id="course" name="course" required>
+                <option value="science">Science</option>
+                <option value="arts">Arts</option>
+                <option value="commerce">Commerce</option>
+            </select>
+
+            <button type="submit">Enroll Now</button>
+        </form>
+
+        <div id="formMessage" class="success"></div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let valid = true;
+
+            // Reset all error messages
+            document.querySelectorAll('.error').forEach((el) => el.innerHTML = '');
+            document.getElementById('formMessage').innerHTML = '';
+
+            // Validate First Name
+            let firstName = document.getElementById('firstName').value;
+            if (firstName === "") {
+                document.getElementById('firstNameError').innerHTML = "First Name is required.";
+                valid = false;
+            }
+
+            // Validate Last Name
+            let lastName = document.getElementById('lastName').value;
+            if (lastName === "") {
+                document.getElementById('lastNameError').innerHTML = "Last Name is required.";
+                valid = false;
+            }
+
+            // Validate Email
+            let email = document.getElementById('email').value;
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').innerHTML = "Please enter a valid email address.";
+                valid = false;
+            }
+
+            // Validate Phone Number
+            let phone = document.getElementById('phone').value;
+            let phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+            if (!phonePattern.test(phone)) {
+                document.getElementById('phoneError').innerHTML = "Please enter a valid phone number (e.g., 123-456-7890).";
+                valid = false;
+            }
+
+            // Validate Address
+            let address = document.getElementById('address').value;
+            if (address === "") {
+                document.getElementById('addressError').innerHTML = "Address is required.";
+                valid = false;
+            }
+
+            // If form is valid, show success message and prevent submission
+            if (valid) {
+                document.getElementById('formMessage').innerHTML = "Enrollment successful! Thank you.";
+                // You can also handle form submission here (e.g., with AJAX)
+                return false; // Prevent default form submission
+            }
+
+            // Prevent form submission if not valid
+            return false;
+        }
+    </script>
+</body>
+</html>
