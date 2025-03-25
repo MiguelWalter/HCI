@@ -1,0 +1,857 @@
+Module 5 Accessibility and Aria.docx
+Module 5 : I. Designing Accessible and Inclusive Interfaces in JavaScript
+
+II. Objectives: By the end of this lesson, students will be able to:
+
+Understand and apply the core principles of accessibility based on WCAG guidelines.
+Implement ARIA attributes to enhance the accessibility of web applications.
+Use JavaScript to test and improve accessibility.
+Design and manage keyboard navigation and screen reader support.
+Ensure focus management for better user experience.
+III. Activities, Strategies, and Methods:
+
+Lecture & Discussion: Overview of WCAG guidelines and ARIA attributes.
+Demonstration: Implementing accessibility features using JavaScript.
+Hands-On Activity: Building an accessible form with JavaScript validation and ARIA enhancements.
+Collaborative Learning and Hands on: Testing and improving real-world website accessibility.
+IV. Detailed Lesson Content with Examples:
+
+Principles of Accessibility (WCAG Guidelines)
+Here are the four WCAG (Web Content Accessibility Guidelines) principles:
+
+Perceivable – Information and user interface components must be presented in ways that users can perceive.
+Examples: Providing text alternatives for images, captions for videos, and ensuring content is distinguishable.
+Operable – User interface components and navigation must be operable by everyone.
+Examples: Supporting keyboard navigation, providing enough time to read content, and avoiding content that causes seizures.
+Understandable – Information and operation of the user interface must be understandable.
+Examples: Using clear instructions, predictable navigation, and providing input assistance for forms.
+Robust – Content must be robust enough to be interpreted reliably by a wide variety of user agents, including assistive technologies.
+Examples: Using valid HTML, ensuring compatibility with screen readers, and future-proofing content for new technologies.
+
+Program Example: Accessible Image with Text Alternative
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>Accessible Image Example</title>
+
+</head>
+
+<body>
+
+  <h1>Welcome to Our Store</h1>
+
+  <img src="shoes.jpg" alt="A pair of red sports shoes available for purchase." />
+
+</body>
+
+</html>
+
+Explanation:
+
+WCAG Principle: Perceivable.
+Why: Provides an alt description so visually impaired users understand the image context.
+Making Interfaces Accessible (ARIA Attributes)
+
+Program Example: Button with ARIA Label
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA Label Example</title>
+
+</head>
+
+<body>
+
+  <h1>Accessible Button</h1>
+
+  <button aria-label="Submit Form">Submit</button>
+
+</body>
+
+</html>
+
+Explanation:
+
+ARIA Attribute: aria-label provides an accessible name.
+Why: Screen readers will announce "Submit Form" for better understanding.
+Here's a list of the ARIA (Accessible Rich Internet Applications) principles with program examples for each:
+1. Roles
+Defines the purpose of an element to assistive technologies.
+Example: ARIA Role for a Dialog
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ARIA Role Example</title>
+</head>
+<body>
+  <button id="openModal">Open Modal</button>
+  <div id="modal" role="dialog" aria-labelledby="modalTitle" tabindex="-1" hidden>
+    <h2 id="modalTitle">Subscription Form</h2>
+    <p>Enter your email to subscribe.</p>
+    <input type="email" placeholder="Email" />
+    <button id="closeModal">Close</button>
+  </div>
+  <script>
+    const openBtn = document.getElementById('openModal');
+    const closeBtn = document.getElementById('closeModal');
+    const modal = document.getElementById('modal');
+    openBtn.addEventListener('click', () => {
+      modal.hidden = false;
+      modal.focus();
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.hidden = true;
+      openBtn.focus();
+    });
+  </script>
+</body>
+</html>
+✅ Why: The role="dialog" helps screen readers recognize the content as a dialog box.
+2. Properties
+Provides additional meaning or behavior to elements.
+Example: ARIA Property – aria-required
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ARIA Property Example</title>
+</head>
+<body>
+  <h1>Contact Form</h1>
+  <form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" aria-required="true" />
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
+✅ Why: aria-required="true" informs assistive technologies that the field is mandatory.
+3. States
+Indicates dynamic changes to an element.
+Example: ARIA State – aria-expanded
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ARIA State Example</title>
+</head>
+<body>
+  <button id="toggle" aria-expanded="false">Show Content</button>
+  <div id="content" hidden>
+    <p>This is the hidden content.</p>
+  </div>
+  <script>
+    const toggleBtn = document.getElementById('toggle');
+    const content = document.getElementById('content');
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', !isExpanded);
+      content.hidden = isExpanded;
+    });
+  </script>
+</body>
+</html>
+✅ Why: aria-expanded notifies screen readers whether the content is open or closed.
+4. Live Regions
+Announces dynamic content updates.
+Example: ARIA Live Region for Error Message
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA Live Example</title>
+
+</head>
+
+<body>
+
+  <h1>Form Validation</h1>
+
+  <form id="myForm">
+
+    <label for="email">Email:</label>
+
+    <input type="email" id="email" />
+
+    <div id="error" aria-live="polite"></div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+
+  <script>
+
+    const form = document.getElementById('myForm');
+
+    const errorDiv = document.getElementById('error');
+
+
+    form.addEventListener('submit', (e) => {
+
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+
+
+      if (!email) {
+
+        errorDiv.textContent = 'Email is required';
+
+      } else {
+
+        errorDiv.textContent = 'Form submitted successfully';
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+✅ Why: aria-live="polite" ensures the error message is read to users dynamically.
+5. Keyboard Accessibility
+Allows interaction using a keyboard.
+Example: Keyboard Accessible Tabs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Keyboard Tabs Example</title>
+</head>
+<body>
+  <div role="tablist" aria-label="Sample Tabs">
+    <button role="tab" id="tab1" aria-selected="true" tabindex="0">Tab 1</button>
+    <button role="tab" id="tab2" aria-selected="false" tabindex="-1">Tab 2</button>
+  </div>
+  <div id="tab1-content">Content for Tab 1</div>
+  <div id="tab2-content" hidden>Content for Tab 2</div>
+  <script>
+    const tabs = document.querySelectorAll('[role="tab"]');
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('keydown', (e) => {
+        let newIndex = index;
+        if (e.key === 'ArrowRight') newIndex = (index + 1) % tabs.length;
+        if (e.key === 'ArrowLeft') newIndex = (index - 1 + tabs.length) % tabs.length;
+        tabs[index].setAttribute('aria-selected', 'false');
+        tabs[index].setAttribute('tabindex', '-1');
+        tabs[newIndex].setAttribute('aria-selected', 'true');
+        tabs[newIndex].setAttribute('tabindex', '0');
+        tabs[newIndex].focus();
+      });
+    });
+  </script>
+</body>
+</html>
+✅ Why: Ensures keyboard users can navigate using arrow keys.
+Testing Accessibility with JavaScript
+Here's a list of the ARIA (Accessible Rich Internet Applications) principles with program examples for each:
+
+
+---
+
+
+ 1. Roles
+
+Defines the purpose of an element to assistive technologies.
+
+
+Example: ARIA Role for a Dialog
+
+```html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA Role Example</title>
+
+</head>
+
+<body>
+
+  <button id="openModal">Open Modal</button>
+
+
+  <div id="modal" role="dialog" aria-labelledby="modalTitle" tabindex="-1" hidden>
+
+    <h2 id="modalTitle">Subscription Form</h2>
+
+    <p>Enter your email to subscribe.</p>
+
+    <input type="email" placeholder="Email" />
+
+    <button id="closeModal">Close</button>
+
+  </div>
+
+
+  <script>
+
+    const openBtn = document.getElementById('openModal');
+
+    const closeBtn = document.getElementById('closeModal');
+
+    const modal = document.getElementById('modal');
+
+
+    openBtn.addEventListener('click', () => {
+
+      modal.hidden = false;
+
+      modal.focus();
+
+    });
+
+
+    closeBtn.addEventListener('click', () => {
+
+      modal.hidden = true;
+
+      openBtn.focus();
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+```
+
+✅ Why: The `role="dialog"` helps screen readers recognize the content as a dialog box.
+
+
+---
+
+
+ 2. Properties
+
+Provides additional meaning or behavior to elements.
+
+
+Example: ARIA Property – `aria-required`
+
+```html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA Property Example</title>
+
+</head>
+
+<body>
+
+  <h1>Contact Form</h1>
+
+  <form>
+
+    <label for="name">Name:</label>
+
+    <input type="text" id="name" aria-required="true" />
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+</body>
+
+</html>
+
+```
+
+✅ Why: `aria-required="true"` informs assistive technologies that the field is mandatory.
+
+
+
+ 3. States
+
+Indicates dynamic changes to an element.
+
+
+Example: ARIA State – `aria-expanded`
+
+```html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA State Example</title>
+
+</head>
+
+<body>
+
+  <button id="toggle" aria-expanded="false">Show Content</button>
+
+  <div id="content" hidden>
+
+    <p>This is the hidden content.</p>
+
+  </div>
+
+
+  <script>
+
+    const toggleBtn = document.getElementById('toggle');
+
+    const content = document.getElementById('content');
+
+
+    toggleBtn.addEventListener('click', () => {
+
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+
+      toggleBtn.setAttribute('aria-expanded', !isExpanded);
+
+      content.hidden = isExpanded;
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+```
+
+✅ Why: `aria-expanded` notifies screen readers whether the content is open or closed.
+
+
+---
+
+
+ 4. Live Regions
+
+Announces dynamic content updates.
+
+
+Example: ARIA Live Region for Error Message
+
+html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>ARIA Live Example</title>
+
+</head>
+
+<body>
+
+  <h1>Form Validation</h1>
+
+  <form id="myForm">
+
+    <label for="email">Email:</label>
+
+    <input type="email" id="email" />
+
+    <div id="error" aria-live="polite"></div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+
+  <script>
+
+    const form = document.getElementById('myForm');
+
+    const errorDiv = document.getElementById('error');
+
+
+    form.addEventListener('submit', (e) => {
+
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+
+
+      if (!email) {
+
+        errorDiv.textContent = 'Email is required';
+
+      } else {
+
+        errorDiv.textContent = 'Form submitted successfully';
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+```
+
+✅ Why: `aria-live="polite"` ensures the error message is read to users dynamically.
+
+
+---
+
+
+ 5. Keyboard Accessibility
+
+Allows interaction using a keyboard.
+
+
+Example: Keyboard Accessible Tabs
+
+```html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>Keyboard Tabs Example</title>
+
+</head>
+
+<body>
+
+  <div role="tablist" aria-label="Sample Tabs">
+
+    <button role="tab" id="tab1" aria-selected="true" tabindex="0">Tab 1</button>
+
+    <button role="tab" id="tab2" aria-selected="false" tabindex="-1">Tab 2</button>
+
+  </div>
+
+
+  <div id="tab1-content">Content for Tab 1</div>
+
+  <div id="tab2-content" hidden>Content for Tab 2</div>
+
+
+  <script>
+
+    const tabs = document.querySelectorAll('[role="tab"]');
+
+
+    tabs.forEach((tab, index) => {
+
+      tab.addEventListener('keydown', (e) => {
+
+        let newIndex = index;
+
+
+        if (e.key === 'ArrowRight') newIndex = (index + 1) % tabs.length;
+
+        if (e.key === 'ArrowLeft') newIndex = (index - 1 + tabs.length) % tabs.length;
+
+
+        tabs[index].setAttribute('aria-selected', 'false');
+
+        tabs[index].setAttribute('tabindex', '-1');
+
+
+        tabs[newIndex].setAttribute('aria-selected', 'true');
+
+        tabs[newIndex].setAttribute('tabindex', '0');
+
+        tabs[newIndex].focus();
+
+      });
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+```
+
+✅ Why: Ensures keyboard users can navigate using arrow keys.
+
+
+Program Example: Dynamic Error Message with Live Region
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>Accessible Error Handling</title>
+
+</head>
+
+<body>
+
+  <h1>Form Validation</h1>
+
+  <form id="myForm">
+
+    <label for="email">Email:</label>
+
+    <input type="email" id="email" />
+
+    <div id="error" aria-live="polite"></div>
+
+    <button type="submit">Submit</button>
+
+  </form>
+
+
+  <script>
+
+    const form = document.getElementById('myForm');
+
+    form.addEventListener('submit', (e) => {
+
+      e.preventDefault();
+
+      const email = document.getElementById('email');
+
+      const errorDiv = document.getElementById('error');
+
+
+      if (!email.value) {
+
+        errorDiv.textContent = 'Email is required';
+
+        email.focus();
+
+      } else {
+
+        errorDiv.textContent = 'Form submitted successfully';
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+Explanation:
+
+Why: Announces errors in real-time using aria-live.
+JavaScript: Dynamically manages error display and focus.
+4. Implementing Keyboard and Screen Reader Support
+
+Program Example: Keyboard Navigation for a Modal
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>Keyboard Navigation Example</title>
+
+</head>
+
+<body>
+
+  <button id="openModal">Open Modal</button>
+
+
+  <div id="modal" role="dialog" aria-labelledby="modalTitle" tabindex="-1" hidden>
+
+    <h2 id="modalTitle">Accessible Modal</h2>
+
+    <p>Press Escape to close.</p>
+
+    <button id="closeModal">Close</button>
+
+  </div>
+
+
+  <script>
+
+    const openBtn = document.getElementById('openModal');
+
+    const closeBtn = document.getElementById('closeModal');
+
+    const modal = document.getElementById('modal');
+
+
+    openBtn.addEventListener('click', () => {
+
+      modal.hidden = false;
+
+      modal.focus();
+
+    });
+
+
+    closeBtn.addEventListener('click', () => {
+
+      modal.hidden = true;
+
+      openBtn.focus();
+
+    });
+
+
+    document.addEventListener('keydown', (e) => {
+
+      if (e.key === 'Escape' && !modal.hidden) {
+
+        modal.hidden = true;
+
+        openBtn.focus();
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+Explanation:
+
+Why: Supports navigation with keyboard and screen readers.
+JavaScript: Handles focus and Escape key behavior.
+5. Managing Focus and Navigation for Users
+
+Program Example: Accessible Form Navigation
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <title>Focus Management Example</title>
+
+</head>
+
+<body>
+
+  <h1>Login Form</h1>
+
+  <form id="loginForm">
+
+    <label for="username">Username:</label>
+
+    <input type="text" id="username" />
+
+
+    <label for="password">Password:</label>
+
+    <input type="password" id="password" />
+
+
+    <button type="submit">Login</button>
+
+  </form>
+
+
+  <script>
+
+    document.getElementById('username').focus();
+
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+
+      e.preventDefault();
+
+      alert('Form Submitted');
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+
+Explanation:
+
+Why: Ensures the first input receives immediate focus.
+JavaScript: Automatically focuses the username field when the page loads.
+
+V. You are tasked with developing an accessible "Forgot Password" webpage for an e-commerce platform. The page must be user-friendly for all users, including those who rely on assistive technologies like screen readers and keyboard navigation.
+
+
+Requirements:
+
+Your implementation must apply the following:
+
+Principles of Accessibility (WCAG Guidelines)
+Ensure the page is perceivable, operable, understandable, and robust.
+Provide text alternatives, proper labels, and clear feedback.
+Making Interfaces Accessible (ARIA Attributes)
+Use ARIA attributes to enhance assistive technology support (e.g., error messaging, live regions).
+Testing Accessibility with JavaScript
+Implement client-side validation and ensure errors are announced in real-time using aria-live.
+Detect and highlight accessibility issues (e.g., missing labels).
+Implementing Keyboard and Screen Reader Support
+Ensure the page can be navigated using only the keyboard.
+Provide clear focus management (e.g., moving focus to important messages).
+Managing Focus and Navigation for Users
+Manage focus properly when the form is submitted, successful, or fails.
+Ensure the user is guided smoothly through the process.
+
+Task Goals:
+
+Create an accessible "Forgot Password" form that includes:
+Email input field
+Submit button
+Dynamic error messaging
+Enhance screen reader support by implementing:
+ARIA roles and labels
+aria-live for error updates
+Keyboard navigation must be fully supported:
+Ensure tab order is logical
+Handle focus during and after form submission
+Provide feedback in real-time:
+Validate email format and required fields
+Announce errors and success to screen readers
+
+Example User Flow:
+
+The user navigates to the Forgot Password page. The email field is auto-focused.
+If the user leaves the email field empty or enters an invalid format, an error message appears.
+Upon successful form submission, the focus shifts to a confirmation message.
+The page works smoothly for keyboard-only users and is fully compatible with screen readers.
+
+VII. Summary:
+
+Accessibility ensures web content is usable by everyone, including those with disabilities.
+WCAG Principles focus on making web content perceivable, operable, understandable, and robust.
+ARIA Attributes enhance accessibility by providing extra information to assistive technologies.
+Keyboard and Focus Management ensures smooth navigation for all users.
+JavaScript plays a crucial role in dynamically handling accessibility features, improving user experiences, and maintaining inclusive interfaces.
+By incorporating these practices, developers create user-friendly and accessible web applications for a diverse audience.
+
+
