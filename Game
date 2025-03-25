@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bullet Hell Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 2px solid white;
+    }
+    .health-bar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 16px;
+    }
+    .game-over, .you-win {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="health-bar">
+    <span>Player HP: <span id="playerHP">100</span></span><br>
+    <span>Boss HP: <span id="bossHP">1000000000</span></span>
+  </div>
+  <div id="gameOver" class="game-over" style="display:none;">Game Over!</div>
+  <div id="youWin" class="you-win" style="display:none;">You Win!</div>
+  <canvas id="gameCanvas"></canvas>
+  <script>
+    // Set up the canvas and game context
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 600;
+
+    // Game variables
+    const playerWidth = 30;
+    const playerHeight = 30;
+    const bulletWidth = 5;
+    const bulletHeight = 10;
+    const bulletSpeed = 5;
+    let bullets = [];
+    let bossBullets = [];
+    let enemies = [];
+    let player = { x: canvas.width / 2 - playerWidth / 2, y: canvas.height - playerHeight - 10, width: playerWidth, height: playerHeight, speed: 5, hp: 100 };
+    let boss;
+    let bossSpawned = false;
+    let keys = { left: false, right: false, up: false, down: false };
+    let attackType = 'single'; // Default attack type for the boss
+
+    // Listen for key presses
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") keys.left = true;
+      if (e.key === "ArrowRight") keys.right = true;
+      if (e.key === "ArrowUp") keys.up = true;
+      if (e.key === "ArrowDown") keys.down = true;
+    });
+
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "ArrowLeft") keys.left = false;
+      if (e.key === "ArrowRight") keys.right = false;
+      if (e.key === "ArrowUp") keys.up = false;
+      if (e.key === "ArrowDown") keys.down = false;
+    });
+
+    // Create player movement
+    function movePlayer() {
+      if (keys.left && player.x > 0) player.x -= player.speed;
+      if (keys.right && player.x < canvas.width - player.width) player.x += player.speed;
+      if (keys.up && player.y > 0) player.y -= player.speed;
+      if (keys.down && player.y < canvas.height - player.height) player.y += player.speed;
+    }
+
+    // Bullet class
+    class Bullet {
+      constructor(x, y, speed, direction) {
+        this.x = x;
+        this.y = y;
+        this.width = bulletWidth;
+        this.height = bulletHeight;
+        this.speed = speed;
+        this.direction = direction; // angle for movement
+      }
+      update() {
+        this.x += Math.cos(this.direction) * this.speed;
+        this.y += Math.sin(this.direction) * this.speed;
+      }
+      draw() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Boss bullet class (blue bullets)
+    class BossBullet {
+      constructor(x, y, speed, direction) {
+        this.x = x;
+        this.y = y;
+        this.width = bulletWidth;
+        this.height = bulletHeight;
+        this.speed = speed;
+        this.direction = direction;
+      }
+      update() {
+        this.x += Math.cos(this.direction) * this.speed;
+        this.y += Math.sin(this.direction) * this.speed;
+      }
+      draw() {
+        ctx.fillStyle = "blue"; // Blue bullets for boss
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Enemy class (bullet hell logic)
+    class Enemy {
+      constructor(x, y, speed, size) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.speed = speed;
+      }
+      update() {
+        this.y += this.speed;
+        if (this.y > canvas.height) {
+          this.y = -this.size; // reset enemy to the top
+          this.x = Math.random() * (canvas.width - this.size); // random horizontal spawn
+        }
+      }
+      draw() {
+        ctx.fillStyle = "blue";
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+      }
+    }
+
+    // Boss class with HP and multiple attack types
+    class Boss {
+      constructor(x, y, width, height, health) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.health = health;
+        this.speed = 1;
+        this.shootInterval = 0;
+        this.attackInterval = 0;
+      }
+
+      // Handle attack types
+      attack() {
+        this.attackInterval++;
+
+        if (this.attackInterval % 200 === 0) {
+          // Change attack type every 200 frames (roughly 3 seconds)
+          const attackTypes = ['single', 'shotgun', 'rapidFire'];
+          attackType = attackTypes[Math.floor(Math.random() * attackTypes.length)];
+        }
+
+        // Boss attacks based on the current attack type
+        if (attackType === 'single') {
+          let angle = Math.atan2(player.y - this.y, player.x - this.x);
+          bossBullets.push(new BossBullet(this.x + this.width / 2, this.y + this.height, bulletSpeed, angle));
+        } else if (attackType === 'shotgun') {
+          // Shotgun spread attack (shoot 5 bullets in different angles)
+          for (let i = -2; i <= 2; i++) {
+            let angle = Math.atan2(player.y - this.y, player.x - this.x) + (i * Math.PI / 16);
+            bossBullets.push(new BossBullet(this.x + this.width / 2, this.y + this.height, bulletSpeed, angle));
+          }
+        } else if (attackType === 'rapidFire') {
+          // Rapid fire (shoot multiple bullets quickly)
+          for (let i = 0; i < 5; i++) {
+            let angle = Math.atan2(player.y - this.y, player.x - this.x);
+            bossBullets.push(new BossBullet(this.x + this.width / 2, this.y + this.height, bulletSpeed, angle));
+          }
+        }
+      }
+
+      update() {
+        // Boss moves horizontally across the top of the screen
+        this.x += this.speed;
+        if (this.x > canvas.width - this.width || this.x < 0) this.speed = -this.speed;
+
+        // Shoot based on attack type
+        this.shootInterval++;
+        if (this.shootInterval % 60 === 0) { // Shoot every 60 frames (1 second)
+          this.attack();
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Generate random enemies in the bullet hell
+    function createEnemies() {
+      if (Math.random() < 0.03) {
+        let size = 20;
+        let speed = Math.random() * 2 + 2; // Random speed
+        let x = Math.random() * (canvas.width - size);
+        enemies.push(new Enemy(x, -size, speed, size));
+      }
+    }
+
+    // Check if the player has collided with any bullets
+    function checkCollisions() {
+      // Check for collisions between player's bullets and the boss
+      for (let i = 0; i < bullets.length; i++) {
+        if (bullets[i].x < boss.x + boss.width && bullets[i].x + bullets[i].width > boss.x &&
+            bullets[i].y < boss.y + boss.height && bullets[i].y + bullets[i].height > boss.y) {
+          // Collision detected: reduce boss HP
+          boss.health -= 100000;
+          bullets.splice(i, 1); // Remove bullet after collision
+          document.getElementById("bossHP").innerText = boss.health;
+          if (boss.health <= 0) {
+            console.log("Boss defeated!");
+            document.getElementById("youWin").style.display = "block";
+            boss.health = 100000; // Reset boss HP to 100k after defeating
+          }
+        }
+      }
+
+      // Check for collisions between the boss's bullets and the player
+      for (let i = 0; i < bossBullets.length; i++) {
+        if (bossBullets[i].x < player.x + player.width && bossBullets[i].x + bulletWidth > player.x &&
+            bossBullets[i].y < player.y + player.height && bossBullets[i].y + bulletHeight > player.y) {
+          // Collision detected: reduce player HP
+          player.hp -= 10;
+          bossBullets.splice(i, 1); // Remove bullet after collision
+          document.getElementById("playerHP").innerText = player.hp;
+          if (player.hp <= 0) {
+            console.log("Player defeated!");
+            document.getElementById("gameOver").style.display = "block";
+            stopGame();
+          }
+        }
+      }
+    }
+
+    // Stop the game
+    function stopGame() {
+      cancelAnimationFrame(gameLoop);
+    }
+
+    // Game update loop
+    function gameLoop() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Move player
+      movePlayer();
+
+      // Create player bullets (shoot at the boss)
+      if (Math.random() < 0.1 && bossSpawned) {
+        // Calculate angle to the boss
+        let angle = Math.atan2(boss.y - player.y, boss.x - player.x);
+        // Bullet spawn position is just above the player's head
+        bullets.push(new Bullet(player.x + player.width / 2 - bulletWidth / 2, player.y - bulletHeight, bulletSpeed, angle));
+      }
+
+      // Update and draw player bullets
+      for (let i = 0; i < bullets.length; i++) {
+        bullets[i].update();
+        bullets[i].draw();
+        if (bullets[i].y < 0 || bullets[i].x < 0 || bullets[i].x > canvas.width) bullets.splice(i, 1); // Remove bullet when it goes off-screen
+      }
+
+      // Create and update enemies
+      createEnemies();
+      for (let enemy of enemies) {
+        enemy.update();
+        enemy.draw();
+      }
+
+      // Update and draw boss (spawn after 5 seconds)
+      if (!bossSpawned && Date.now() > 5000) {
+        boss = new Boss(canvas.width / 2 - 75, 50, 150, 50, 1000000000);  // Boss appears after 5 seconds
+        bossSpawned = true;
+      }
+
+      if (bossSpawned) {
+        boss.update();
+        boss.draw();
+        // Draw and update boss bullets (shooting at the player)
+        for (let i = 0; i < bossBullets.length; i++) {
+          bossBullets[i].update();
+          bossBullets[i].draw();
+        }
+      }
+
+      // Check for collisions
+      checkCollisions();
+
+      // Draw player
+      ctx.fillStyle = "white";
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+
+      // Repeat the game loop
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    gameLoop();
+  </script>
+</body>
+</html>
