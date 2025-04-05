@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System - Home</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.4); /* Dark background with transparency */
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            background-image: url('Home Image.jpg'); /* Set your background image here */
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #35424a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049;
+        }
+
+        nav a.active {
+            background: #45a049;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #35424a;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Home</h1>
+        <p>Welcome to Home, this is where you can read the overview of this LMS.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_instructor.html" class="active">Home</a>
+        <a href="view_course_instructor.html">View Courses</a>
+        <a href="gallery_instructor.html">Gallery</a>
+        <a href="game_instructor.html">Games</a>
+        <a href="enrollment_instructor.html">Enrollment</a>
+        <a href="create_course_instructor.html" class="create-course">Create Courses</a>
+        <a href="setting_instructor.html">Settings</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="content-container">
+            <h2>User Management System Overview</h2>
+            <p>This User Management System is designed to facilitate user management within a Learning Management System (LMS). It allows for tracking user login status and assigning permissions based on user roles.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+</body>
+</html>

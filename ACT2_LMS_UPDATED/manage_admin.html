@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #2c3e50;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; /* Position relative for absolute positioning of the button */
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            width: auto; /* Set width to auto to fit content */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049;
+        }
+
+        nav a.active {
+            background: #45a049;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the containers */
+            gap: 20px; /* Space between containers */
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Set a fixed width for the container */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* Space above the table */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #35424a;
+            color: white;
+        }
+
+        .user-form {
+            padding: 20px; /* Add padding to the form */
+        }
+
+        .user-form input, .user-form select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .user-form button {
+            background: #35424a;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .user-form button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Manage Users</h1>
+        <p>Here you can view, add, edit, and delete users.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_admin.html">Home</a>
+        <a href="view_course_admin.html">View Courses</a>
+        <a href="gallery_admin.html">Gallery</a>
+        <a href="game_admin.html">Games</a>
+        <a href="enrollment_admin.html">Enrollment</a>
+        <a href="create_course_admin.html">Create Courses</a>
+        <a href="manage_admin.html" class="active">Manage Users</a>
+        <a href="setting_admin.html">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="container">
+            <div class="user-form">
+                <h2>Add User</h2>
+                <input type="text" id="userName" placeholder="Full Name" required>
+                <input type="email" id="userEmail" placeholder="Email" required>
+                <select id="userRole" required>
+                    <option value="">Select Role</option>
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button onclick="addUser ()">Add User</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>Student</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>Instructor</td>
+                    </tr>
+                    <tr>
+                        <td>Miguel Uy</td>
+                        <td>miguel@example.com</td>
+                        <td>Admin</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        let users = [];
+        let userIdCounter = 1;
+
+        function addUser () {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const role = document.getElementById('userRole').value;
+
+            if (name && email && role) {
+                const user = {
+                    id: userIdCounter++,
+                    name: name,
+                    email: email,
+                    role: role
+                };
+                users.push(user);
+                updateUser Table();
+                clearForm();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        function updateUser Table() {
+            const userTableBody = document.getElementById('userTableBody');
+            userTableBody.innerHTML = ''; // Clear existing rows
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button onclick="editUser (${user.id})">Edit</button>
+                        <button onclick="deleteUser (${user.id})">Delete</button>
+                    </td>
+                `;
+                userTableBody.appendChild(row);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('userName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userRole').value = '';
+        }
+
+        function editUser (userId) {
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                document.getElementById('userName').value = user.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userRole').value = user.role;
+                deleteUser (userId); // Remove user from the list to allow updating
+            }
+        }
+
+        function deleteUser (userId) {
+            users = users.filter(user => user.id !== userId);
+            updateUser Table();
+        }
+    </script>
+</body>
+</html>
