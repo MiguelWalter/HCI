@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System - Settings</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+        }
+
+        body.dark-mode {
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* Light text color */
+        }
+
+        header {
+            background: #2c3e50; /* Dark header */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Logout Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            width: auto; /* Set width to auto to fit content */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049; /* Green background on hover */
+        }
+
+        nav a.active {
+            background: #45a049; /* Highlight the active page link */
+        }
+
+        footer {
+            background: #2c3e50; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px; /* Added margin to create space above the footer */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the container */
+        }
+
+        .content-container {
+            background: #ffffff; /* White background for the content container */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Fixed width for the container to match Create Course */
+            text-align: left; /* Align text to the left */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        h2 {
+            color: #35424a; /* Dark color for section titles */
+            text-align: center; /* Center the section titles */
+        }
+
+        label {
+            display: block; /* Make labels block elements */
+            margin-top: 10px; /* Space above labels */
+        }
+
+        select, input[type="checkbox"] {
+            margin-top: 5px; /* Space above inputs */
+            width: 100%; /* Full width for inputs */
+            padding: 10px; /* Padding for inputs */
+            border: 1px solid #ccc; /* Border for inputs */
+            border-radius: 5px; /* Rounded corners */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        button {
+            background: #35424a; /* Button background color */
+            color: white;
+            border: none;
+            padding: 10px 15px; /* Padding for the button */
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px; /* Space above the button */
+            width: 100%; /* Full width for button */
+        }
+
+        button:hover {
+            background: #45a049; /* Green background on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Settings</h1>
+        <p>Customize your preferences below.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_admin.html">Home</a>
+        <a href="view_course_admin.html">View Courses</a>
+        <a href="gallery_admin.html">Gallery</a>
+        <a href="game_admin.html">Games</a>
+        <a href="enrollment_admin.html">Enrollment</a>
+        <a href="create_course_admin.html">Create Courses</a>
+        <a href="manage_admin.html">Manage Users</a>
+        <a href="setting_admin.html" class="active">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="content-container">
+            <h2>User Preferences</h2>
+            <form id="settingsForm">
+                <label for="theme">Select Theme:</label>
+                <select id="theme" onchange="toggleDarkMode()">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+
+                <label for="notifications">Notification Settings:</label>
+                <select id="notifications">
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                </select>
+
+                <button type="button" onclick="saveSettings()">Save Settings</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        // Load saved theme preference from local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+            document.getElementById('theme').value = savedTheme;
+        });
+
+        function toggleDarkMode() {
+            const theme = document.getElementById('theme').value;
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+        }
+
+        function saveSettings() {
+            const theme = document.getElementById('theme').value;
+            const notifications = document.getElementById('notifications').value;
+
+            // Save the theme preference to local storage
+            localStorage.setItem('theme', theme);
+
+            // Here you can add code to save the settings, e.g., to localStorage or a server
+            alert(`Settings saved:\nTheme: ${theme}\nNotifications: ${notifications}`);
+        }
+    </script>
+</body>
+</html>

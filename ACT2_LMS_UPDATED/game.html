@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Star Catcher Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+            flex-direction: column;
+        }
+
+        #menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            position: relative; /* Position relative for absolute children */
+            z-index: 1; /* Ensure menu is above the video */
+            height: 100%; /* Full height */
+            width: 100%; /* Full width */
+            background-image: url('galaxy2.png'); /* Set the background image for the menu */
+            background-size: cover; /* Ensure the image covers the entire area */
+            background-position: center; /* Center the background image */
+        }
+
+        #menu video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the entire area */
+            z-index: 0; /* Send video behind other elements */
+        }
+
+        #gameTitle {
+            width: 1200px; /* Increased width for the title */
+            height: auto; /* Maintain aspect ratio */
+            z-index: 1; /* Ensure title is above the video */
+        }
+
+        #startButton, #exitButton {
+            width: auto; /* Adjust width as needed */
+            height: 50px; /* Set a height for the button image */
+            cursor: pointer; /* Change cursor to pointer */
+            margin-top: 20px; /* Add some space between title and button */
+            z-index: 1; /* Ensure button is above the video */
+            position: relative; /* Position relative to ensure z-index works */
+        }
+
+        #gameArea {
+            position: relative;
+            width: 800px; /* Increased width for the game area */
+            height: 600px; /* Increased height for the game area */
+            border: 2px solid #ffffff;
+            overflow: hidden;
+            display: none; /* Hide game area initially */
+            background-image: url('galaxy.png'); /* Set the background image for the game area */
+            background-size: cover; /* Ensure the image covers the entire area */
+            background-position: center; /* Center the background image */
+        }
+
+        #player {
+            position: absolute;
+            width: 120px; /* Increased size for the ship */
+            height: 120px; /* Increased size for the ship */
+            background-image: url('8bit_ship.png'); /* Use your image */
+            background-size: cover; /* Ensure the image covers the div */
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .star {
+            position: absolute;
+            width: 60px; /* Increased size for coins and asteroids */
+            height: 60px; /* Increased size for coins and asteroids */
+            background-size: cover; /* Ensure the image covers the div */
+        }
+
+        .star.green {
+            background-image: url('8bit_coin.png'); /* Use your image for coins */
+        }
+
+        .star.red {
+            background-image: url('8bit_asteroid.png'); /* Use your image for asteroids */
+        }
+
+        #score, #lives {
+            position: absolute;
+            top: 10px;
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        #lives {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <video autoplay muted loop>
+            <source src="galaxy2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <img id="gameTitle" src="game_title.png" alt="Star Catcher Game Title"> <!-- Use your PNG for the title -->
+        <img id="startButton" src="start_button.png" alt="Start Game"> <!-- Use your image for the start button -->
+        <img id="exitButton" src="exit_button.png" alt="Exit Game"> <!-- Use your image for the exit button -->
+    </div>
+    <div id="gameArea">
+        <div id="player"></div>
+        <div id="score">Score: 0</div>
+        <div id="lives">Lives: 3</div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="background_music.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <script>
+        const gameArea = document.getElementById('gameArea');
+        const player = document.getElementById('player');
+        const scoreDisplay = document.getElementById('score');
+        const livesDisplay = document.getElementById('lives');
+        const startButton = document.getElementById('startButton');
+        const exitButton = document.getElementById('exitButton'); // Reference to the exit button
+        const menu = document.getElementById('menu');
+
+        let score = 0;
+        let lives = 3;
+        let playerPosition = gameArea.clientWidth / 2 - 60; // Adjusted for new player size
+        let gameInterval;
+
+        function updatePlayerPosition() {
+            player.style.left = `${playerPosition}px`;
+        }
+
+        function createStar() {
+            for (let i = 0; i < 2; i++) { // Create two stars at once
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.classList.add(Math.random() < 0.5 ? 'green' : 'red');
+                star.style.left = `${Math.random() * (gameArea.clientWidth - 60)}px`; // Adjusted for new star size
+                star.style.top = '0px';
+                gameArea.appendChild(star);
+                moveStar(star);
+            }
+        }
+
+        function moveStar(star) {
+            const interval = setInterval(() => {
+                const starTop = parseFloat(star.style.top);
+                if (starTop < gameArea.clientHeight) {
+                    star.style.top = `${starTop + 6}px`; // Increased speed for larger game area
+                } else {
+                    clearInterval(interval);
+                    gameArea.removeChild(star);
+                }
+
+                if (isCollision(player, star)) {
+                    clearInterval(interval);
+                    gameArea.removeChild(star);
+                    if (star.classList.contains('red')) {
+                        lives--;
+                        if (lives <= 0) {
+                            alert('Game Over! Your score: ' + score);
+                            resetGame();
+                        }
+                    } else {
+                        score++;
+                    }
+                    updateScoreAndLives();
+                }
+            }, 20);
+        }
+
+        function isCollision(player, star) {
+            const playerRect = player.getBoundingClientRect();
+            const starRect = star.getBoundingClientRect();
+            return ! (
+                playerRect.right < starRect.left ||
+                playerRect.left > starRect.right ||
+                playerRect.bottom < starRect.top ||
+                playerRect.top > starRect.bottom
+            );
+        }
+
+        function updateScoreAndLives() {
+            scoreDisplay.textContent = 'Score: ' + score;
+            livesDisplay.textContent = 'Lives: ' + lives;
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            updateScoreAndLives();
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => gameArea.removeChild(star));
+            menu.style.display = 'flex'; // Show menu again
+            gameArea.style.display = 'none'; // Hide game area
+            clearInterval(gameInterval); // Stop the game loop
+        }
+
+        startButton.addEventListener('click', () => {
+            menu.style.display = 'none'; // Hide menu
+            gameArea.style.display = 'block'; // Show game area
+            gameInterval = setInterval(createStar, 800); // Start creating stars more frequently
+        });
+
+        exitButton.addEventListener('click', () => {
+            window.location.href = 'home_admin.html'; // Redirect to home_admin.html
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            const rect = gameArea.getBoundingClientRect();
+            playerPosition = event.clientX - rect.left - 60; // Center the ship
+            playerPosition = Math.max(0, Math.min(playerPosition, gameArea.clientWidth - 120)); // Adjusted for new player size
+            updatePlayerPosition();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                playerPosition -= 20; // Increased movement speed
+                playerPosition = Math.max(0, playerPosition);
+                updatePlayerPosition();
+            } else if (event.key === 'ArrowRight') {
+                playerPosition += 20; // Increased movement speed
+                playerPosition = Math.min(gameArea.clientWidth - 120, playerPosition); // Adjusted for new player size
+                updatePlayerPosition();
+            }
+        });
+    </script>
+</body>
+</html>

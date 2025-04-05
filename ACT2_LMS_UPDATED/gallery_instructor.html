@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System - Gallery</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Set background to light gray */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background: #2c3e50; /* Dark header */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; /* Position relative for absolute positioning of the button */
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049; /* Green background on hover */
+        }
+
+        nav a.active {
+            background: #45a049; /* Highlight the active page link */
+        }
+
+        footer {
+            background: #2c3e50; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px; /* Added margin to create space above the footer */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the container */
+        }
+
+        .content-container {
+            background: #ffffff; /* White background for the content container */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Limit the width of the main content */
+            width: 100%; /* Full width for smaller screens */
+        }
+
+        h2 {
+            color: #35424a; /* Dark color for section titles */
+            text-align: center; /* Center the section titles */
+        }
+
+        /* Image Gallery Styles */
+        .gallery {
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 90%; /* Use percentage for responsiveness */
+            max-width: 810px; /* Maximum width */
+            height: auto; /* Allow height to adjust */
+            aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
+            margin: 0 auto; /* Center the gallery */
+        }
+
+        .lightbox-img {
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            position: absolute;
+            border-radius: 15px; /* Match the gallery's rounded corners */
+            /* border: 5px solid #DDA0DD; */ /* Remove or comment out this line to eliminate the pink border */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Optional shadow for the image */
+            object-fit: cover; /* Maintain aspect ratio and cover the area */
+            opacity: 0; /* Start with the image hidden */
+            transition: opacity 0.5s ease-in-out; /* Fade effect */
+        }
+
+        .arrow {
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+            color: #fff;
+            z-index: 1;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px;
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .arrow:hover {
+            color: #DDA0DD; /* Change color on hover */
+        }
+
+        .arrow.left {
+            left: 10px; /* Adjusted position */
+        }
+
+        .arrow.right {
+            right: 10px; /* Adjusted position */
+        }
+
+        .indicator-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #333;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition for color and scale */
+        }
+
+        .indicator:hover {
+            transform: scale(1.2); /* Scale up on hover */
+        }
+
+        .indicator.active {
+            background-color: #DDA0DD;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .arrow {
+                font-size: 30px; /* Smaller arrows on small screens */
+            }
+
+            h2 {
+                font-size: 24px; /* Smaller title on small screens */
+            }
+
+            .indicator {
+                width: 10px; /* Smaller indicators */
+                height: 10px; /* Smaller indicators */
+            }
+        }
+
+        @media (max-width: 400px) {
+            h2 {
+                font-size: 20px; /* Even smaller title on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Gallery</h1>
+        <p>Welcome to Gallery, this where you can see the images of this LMS.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_instructor.html">Home</a>
+        <a href="view_course_instructor.html">View Courses</a>
+        <a href="gallery_instructor.html" class="active">Gallery</a>
+        <a href="game_instructor.html">Games</a>
+        <a href="enrollment_instructor.html">Enrollment</a>
+        <a href="create_course_instructor.html" class="create-course">Create Courses</a>
+        <a href="setting_instructor.html">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="content-container">
+            <h2>Image Gallery</h2>
+            <div class="gallery" id="gallery">
+                <span class="arrow left" id="prev">&lt;</span>
+                <img class="lightbox-img" id="lightbox-img" src="" alt="">
+                <span class="arrow right" id="next">&gt;</span>
+            </div>
+
+            <div class="indicator-container" id="indicator-container">
+                <!-- Circles will be generated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        const images = [
+            "image1.jpg",
+            "image2.jpg",
+            "image3.jpg",
+            "image4.jpg",
+            "image5.jpg",
+            "image6.jpg",
+            "image7.jpg",
+            "image8.jpg",
+            "image9.jpg",
+            "image10.jpg",
+            "image11.jpg",
+        ];
+
+        const lightboxImg = document.getElementById('lightbox-img');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const indicatorContainer = document.getElementById('indicator-container');
+        const gallery = document.getElementById('gallery');
+
+        let currentIndex = 0;
+
+        // Create indicators
+        images.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.dataset.index = index; // Store index in data attribute
+            indicatorContainer.appendChild(indicator);
+
+            // Add click event to each indicator
+            indicator.addEventListener('click', () => {
+                currentIndex = index; // Update current index
+                showImage(currentIndex);
+                updateIndicators(); // Update indicators
+            });
+        });
+
+        const showImage = (index) => {
+            lightboxImg.style.opacity = 0; // Fade out the current image
+            setTimeout(() => {
+                lightboxImg.src = images[index]; // Change the image source
+                lightboxImg.onload = () => {
+                    lightboxImg.style.opacity = 1; // Fade in the new image
+                };
+            }, 500); // Match this duration with the CSS transition duration
+        };
+
+        const updateIndicators = () => {
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex); // Toggle active class
+            });
+        };
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length; // Update index
+            showImage(currentIndex); // Show the new image
+            updateIndicators(); // Update indicators
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length; // Update index
+            showImage(currentIndex); // Show the new image
+            updateIndicators(); // Update indicators
+        });
+
+        // Mouse drag functionality
+        let isDragging = false;
+        let startX;
+
+        gallery.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX; // Get the starting mouse position
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const distance = e.clientX - startX; // Calculate the distance moved
+
+            if (distance > 50) { // Swipe right
+                currentIndex = (currentIndex - 1 + images.length) % images.length; // Move to previous image
+                showImage(currentIndex);
+                updateIndicators();
+                isDragging = false; // Reset dragging state
+            } else if (distance < -50) { // Swipe left
+                currentIndex = (currentIndex + 1) % images.length; // Move to next image
+                showImage(currentIndex);
+                updateIndicators();
+                isDragging = false; // Reset dragging state
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false; // Reset dragging state on mouse up
+        });
+
+        // Initialize the gallery with the first image
+        showImage(currentIndex);
+    </script>
+</body>
+</html>

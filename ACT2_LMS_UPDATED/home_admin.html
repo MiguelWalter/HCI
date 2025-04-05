@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System - Home</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background: #2c3e50; /* Dark header */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; /* Position relative for absolute positioning of the button */
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049; /* Green background on hover */
+        }
+
+        nav a.active {
+            background: #45a049; /* Highlight the active page link */
+        }
+
+        footer {
+            background: #2c3e50; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px; /* Added margin to create space above the footer */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the container */
+        }
+
+        .content-container {
+            background: #ffffff; /* White background for the content container */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Limit the width of the main content */
+            width: 100%; /* Full width for smaller screens */
+        }
+
+        h2 {
+            color: #35424a; /* Dark color for section titles */
+            text-align: center; /* Center the section titles */
+        }
+
+        #userDetails {
+            background: #ffffff; /* White background for user details */
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Home</h1>
+        <p>Welcome to Home, this where you can read the overview of this LMS.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_admin.html" class="active">Home</a>
+        <a href="view_course_admin.html">View Courses</a>
+        <a href="gallery_admin.html">Gallery</a>
+        <a href="game_admin.html">Games</a>
+        <a href="enrollment_admin.html">Enrollment</a>
+        <a href="create_course_admin.html" class="create-course">Create Courses</a>
+        <a href="manage_admin.html" class="manage-users">Manage Users</a>
+        <a href="setting_admin.html">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="content-container">
+            <h2>User Management System Overview</h2>
+            <p>This User Management System is designed to facilitate user management within a Learning Management System (LMS). It allows for tracking user login status and assigning permissions based on user roles.</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>Home:</strong> The overview page provides a summary of the LMS features and functionalities.</li>
+                <li><strong>View Courses:</strong> Users can browse and view different courses available in the system.</li>
+                <li><strong>Create Courses:</strong> Instructors can create new courses for students to access and learn from.</li>
+                <li><strong>Settings:</strong> Users can customize their page's appearance based on their preferences, such as theme and notification settings.</li>
+            </ul>
+
+            <h3>Role-Based Access:</h3>
+            <p>Access to features is determined by user roles:</p>
+            <ul>
+                <li><strong>Students:</strong> Can access the View Courses feature.</li>
+                <li><strong>Instructors:</strong> Can view courses and create new courses.</li>
+                <li><strong>Admins:</strong> Can view courses, create courses, and manage users.</li>
+            </ul>
+
+            <h3>How It Works:</h3>
+            <p>Users can register and log in to the system. The system checks for unique emails to prevent duplicate registrations. Once logged in, users can access features based on their assigned roles. Admins have the ability to manage all users, including changing roles and updating preferences.</p>
+
+            <p>Explore the various sections of our portal to learn more about managing users effectively in an LMS environment!</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        // Retrieve user information from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            const userDetails = document.getElementById('userDetails');
+            userDetails.innerHTML = `
+                <p><strong>Name:</strong> ${user.name}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Role:</strong> ${user.role}</p>
+                <p><strong>Login Status:</strong> ${user.isLoggedIn ? 'Logged In' : 'Logged Out'}</p>
+            `;
+
+            // Check if the user is a student
+            const isStudent = user.role === 'student';
+
+            // Add event listeners to the navigation links
+            const createCourseLink = document.querySelector('.create-course');
+            const manageUsersLink = document.querySelector('.manage-users');
+
+            if (isStudent) {
+                // Prevent students from accessing restricted pages
+                createCourseLink.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    alert('Access denied: Students cannot create courses.');
+                });
+
+                manageUsersLink.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    alert('Access denied: Students cannot manage users.');
+                });
+            }
+        } else {
+            // Redirect to login if no user is found
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

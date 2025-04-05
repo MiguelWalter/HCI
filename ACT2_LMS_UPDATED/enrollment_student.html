@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System - Home</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background: #2c3e50; /* Dark header */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; /* Position relative for absolute positioning of the button */
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            width: auto; /* Set width to auto */
+            min-width: 100px; /* Minimum width for the button */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049; /* Green background on hover */
+        }
+
+        nav a.active {
+            background: #45a049; /* Highlight the active page link */
+        }
+
+        footer {
+            background: #2c3e50; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px; /* Added margin to create space above the footer */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the container */
+        }
+
+        .content-container {
+            background: #ffffff; /* White background for the content container */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Limit the width of the main content */
+            width: 100%; /* Full width for smaller screens */
+        }
+
+        h2 {
+            color: #35424a; /* Dark color for section titles */
+            text-align: center; /* Center the section titles */
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555; /* Darker text for labels */
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Enrollment</h1>
+        <p>Welcome to Enrollment, this where you can enroll to this LMS.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_student.html">Home</a>
+        <a href="view_course_student.html">View Courses</a>
+        <a href="gallery_student.html">Gallery</a>
+        <a href="game_student.html">Games</a>
+        <a href="enrollment_student.html" class="active">Enrollment</a>
+        <a href="setting_student.html">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="content-container">
+            <h2>Enrollment Form</h2>
+            <form action="#" method="post">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+
+                <label for="placeOfBirth">Place of Birth:</label>
+                <input type="text" id="placeOfBirth" name="placeOfBirth" required>
+
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="course">Select College Course:</label>
+                <select id="course" name="course" required>
+                    <option value="">Select Course</option>
+                    <option value="computer_science">Computer Science</option>
+                    <option value="information_technology">Information Technology</option>
+                    <option value="computer_engineering">Computer Engineering</option>
+                    <option value="business_administration">Business Administration</option>
+                    <option value="psychology">Psychology</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="nursing">Nursing</option>
+                    <option value="graphic_design">Graphic Design</option>
+                </select>
+
+                <label for="guardianName">Guardian's Name:</label>
+                <input type="text" id="guardianName" name="guardianName" required>
+
+                <label for="guardianPhone">Guardian's Phone Number:</label>
+                <input type="tel" id="guardianPhone" name="guardianPhone" required>
+
+                <button type="submit">Submit Enrollment</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        // Retrieve user information from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            const userDetails = document.getElementById('userDetails');
+            userDetails.innerHTML = `
+                <p><strong>Name:</strong> ${user.name}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Role:</strong> ${user.role}</p>
+                <p><strong>Login Status:</strong> ${user.isLoggedIn ? 'Logged In' : 'Logged Out'}</p>
+            `;
+
+            // Check if the user is a student
+            const isStudent = user.role === 'student';
+
+            // Add event listeners to the navigation links
+            const createCourseLink = document.querySelector('.create-course');
+            const manageUsersLink = document.querySelector('.manage-users');
+
+            if (isStudent) {
+                // Prevent students from accessing restricted pages
+                createCourseLink.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    alert('Access denied: Students cannot create courses.');
+                });
+
+                manageUsersLink.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    alert('Access denied: Students cannot manage users.');
+                });
+            }
+        } else {
+            // Redirect to login if no user is found
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

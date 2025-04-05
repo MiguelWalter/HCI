@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Courses</title>
+    <style>
+        /* Basic Styling */
+        html, body {
+            height: 100%; /* Set height to 100% */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light background for better readability */
+            color: #333; /* Dark text color */
+            display: flex; /* Use flexbox */
+            flex-direction: column; /* Arrange children in a column */
+        }
+
+        header {
+            background: #2c3e50; /* Dark header */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; /* Position relative for absolute positioning of the button */
+        }
+
+        /* Login Button Styling */
+        .login-button {
+            position: absolute; /* Position it absolutely within the header */
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            background-color: #35424a; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for the button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .login-button:hover {
+            background-color: #45a049; /* Change background on hover */
+        }
+
+        nav {
+            background: #35424a;
+            display: flex;
+            justify-content: center; /* Centers the nav links horizontally */
+            align-items: center; /* Vertically center the links */
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #45a049; /* Green background on hover */
+        }
+
+        nav a.active {
+            background: #45a049; /* Highlight the active page link */
+        }
+
+        footer {
+            background: #2c3e50; /* Dark footer */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px; /* Added margin to create space above the footer */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+            justify-content: center; /* Center the containers */
+        }
+
+        .course-container {
+            background: #ffffff; /* White background for the course container */
+            padding: 20px; /* Increased padding */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px; /* Space between course containers */
+            width: 250px; /* Fixed width for course containers */
+            text-align: center; /* Center text */
+            height: 200px; /* Increased height for course containers */
+        }
+
+        button {
+            background: #35424a; /* Button background color */
+            color: white;
+            border: none;
+            padding: 10px 15px; /* Padding for the button */
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px; /* Space above the button */
+        }
+
+        button:hover {
+            background: #45a049; /* Green background on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>View Courses</h1>
+        <p>Welcome to the courses section, this is where you can enter a course based on what you want to study.</p>
+        <button class="login-button" onclick="window.location.href='login.html'">Logout</button>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="home_instructor.html">Home</a>
+        <a href="view_course_instructor.html" class="active">View Courses</a>
+        <a href="gallery_instructor.html">Gallery</a>
+        <a href="game_instructor.html">Games</a>
+        <a href="enrollment_instructor.html">Enrollment</a>
+        <a href="create_course_instructor.html">Create Courses</a>
+        <a href="setting_instructor.html">Settings</a>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main>
+        <div class="course-container">
+            <h2>HTML</h2>
+            <p>The language for building web pages</p>
+            <button onclick="enterCourse('html')">Enter</button>
+        </div>
+        <div class="course-container">
+            <h2>CSS</h2>
+            <p>The language for styling web pages</p>
+            <button onclick="enterCourse('css')">Enter</button>
+        </div>
+        <div class="course-container">
+            <h2>Javascript</h2>
+            <p>The language for programming web pages</p>
+            <button onclick="enterCourse('javascript')">Enter</button>
+        </div>
+        <div class="course-container">
+            <h2>Python</h2>
+            <p>The language for building web applications and data science.</p>
+            <button onclick="enterCourse('python')">Enter</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 User Management System</p>
+    </footer>
+
+    <script>
+        function enterCourse(courseName) {
+            // Redirect to the corresponding course page
+            window.location.href = courseName + ".html";
+        }
+    </script>
+</body>
+</html>
